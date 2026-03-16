@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Voter Registry | E-VOTER AUTH PRO</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f4f7f9; font-family: 'Inter', sans-serif; }
+        .table-container { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .status-badge { font-size: 0.8rem; padding: 5px 12px; border-radius: 20px; }
+        .search-box { max-width: 400px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a href="index.html" class="navbar-brand fw-bold">
+            <i class="bi bi-shield-shaded me-2"></i>E-VOTER AUTH PRO
+        </a>
+        <a href="register.html" class="btn btn-outline-primary btn-sm">New Registration</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Registered Voter Database</h2>
+        <div class="search-box input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+            <input type="text" id="voterSearch" class="form-control border-start-0" placeholder="Search by name, ID or phone...">
+        </div>
+    </div>
+
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Voter Information</th>
+                        <th>Demographics</th>
+                        <th>Contact Details</th>
+                        <th>Reg. Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="voterTable">
+                    </tbody>
+            </table>
+        </div>
+        <div id="noData" class="text-center py-5 d-none">
+            <i class="bi bi-people fs-1 text-muted"></i>
+            <p class="mt-2 text-muted">No voters found in the system.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+async function loadVoters() {
+    const table = document.getElementById("voterTable");
+    const noData = document.getElementById("noData");
+    
+    try {
+        const response = await fetch("http://127.0.0.1:5000/api/voters");
+        const data = await response.json();
+
+        if (!data.voters || data.voters.length === 0) {
+            noData.classList.remove("d-none");
+            return;
+        }
+
+        table.innerHTML = data.voters.map(voter => `
+            <tr>
+                <td><span class="fw-bold text-primary">#${voter.voter_id}</span></td>
+                <td>
+                    <div class="fw-bold">${voter.name}</div>
+                    <small class="text-muted text-uppercase">${voter.gender}</small>
+                </td>
+                <td>
+                    <small class="d-block"><strong>DOB:</strong> ${voter.dob || 'N/A'}</small>
+                </td>
+                <td>
+                    <div class="small"><i class="bi bi-telephone me-1"></i>${voter.phone}</div>
+                    <div class="small text-muted"><i class="bi bi-envelope me-1"></i>${voter.email}</div>
+                </td>
+                <td><small>${new Date(voter.created_at).toLocaleDateString()}</small></td>
+                <td>
+                    <span class="badge status-badge bg-success-subtle text-success border border-success-subtle">
+                        Active
+                    </span>
+                </td>
+                <td>
+                    <small class="d-block"><strong>DOB:</strong> ${voter.dob || 'N/A'}</small>
+
+                    ${
+                        voter.documents && voter.documents.length
+                        ? voter.documents.map(doc => `
+                            <small class="d-block text-muted">
+                                <strong>${doc.document_type}:</strong> ${doc.document_number}
+                            </small>
+                        `).join('')
+                        : '<small class="text-muted">No IDs</small>'
+                    }
+                </td>
+            </tr>
+        `).join('');
+
+    } catch (error) {
+        console.error("Fetch error:", error);
+        table.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Error connecting to server</td></tr>`;
+    }
+}
+
+// Search functionality
+document.getElementById("voterSearch").addEventListener("keyup", function() {
+    let value = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#voterTable tr");
+    rows.forEach(row => {
+        row.style.display = (row.innerText.toLowerCase().indexOf(value) > -1) ? "" : "none";
+    });
+});
+
+function viewDetails(id) {
+    alert("Viewing detailed identity documents for Voter #" + id + "\n(This feature is coming in Phase 2)");
+}
+
+loadVoters();
+</script>
+
+</body>
+</html>
