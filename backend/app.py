@@ -6,17 +6,6 @@ from routes.voter_routes import voter_bp
 from routes.officer_routes import officer_bp
 from routes.otp_routes import otp_bp
 
-app = Flask(__name__)
-
-CORS(app, resources={r"/api/*": {"origins": "*"}})
-
-init_db()
-ensure_upload_dirs()
-
-app.register_blueprint(voter_bp)
-app.register_blueprint(officer_bp)
-app.register_blueprint(otp_bp)
-
 
 def init_db():
     conn = get_db_connection()
@@ -40,6 +29,19 @@ def ensure_upload_dirs():
         path = os.path.join(base, folder)
         os.makedirs(path, exist_ok=True)
     print("[EVRS] Upload directories ready.")
+
+
+app = Flask(__name__)
+
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+# ✅ NOW SAFE TO CALL
+init_db()
+ensure_upload_dirs()
+
+app.register_blueprint(voter_bp)
+app.register_blueprint(officer_bp)
+app.register_blueprint(otp_bp)
 
 
 @app.route("/")
@@ -73,4 +75,4 @@ def stats():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
