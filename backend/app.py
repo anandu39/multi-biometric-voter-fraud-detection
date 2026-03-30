@@ -10,6 +10,9 @@ app = Flask(__name__)
 
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+init_db()
+ensure_upload_dirs()
+
 app.register_blueprint(voter_bp)
 app.register_blueprint(officer_bp)
 app.register_blueprint(otp_bp)
