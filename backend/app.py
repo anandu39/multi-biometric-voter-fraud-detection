@@ -73,6 +73,4 @@ def stats():
 
 
 if __name__ == "__main__":
-    init_db()
-    ensure_upload_dirs()
     app.run(debug=True)
