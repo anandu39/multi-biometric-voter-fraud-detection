@@ -6,15 +6,23 @@ from routes.voter_routes import voter_bp
 from routes.officer_routes import officer_bp
 from routes.otp_routes import otp_bp
 
+app = Flask(__name__)
+
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+app.register_blueprint(voter_bp)
+app.register_blueprint(officer_bp)
+app.register_blueprint(otp_bp)
+
+
+# One level up from backend/ → project root
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 def init_db():
     conn = get_db_connection()
 
-    schema_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "database",
-        "schema.sql"
-    )
+    schema_path = os.path.join(ROOT_DIR, "database", "schema.sql")
 
     with open(schema_path, "r") as f:
         conn.executescript(f.read())
@@ -24,24 +32,10 @@ def init_db():
 
 
 def ensure_upload_dirs():
-    base = os.path.dirname(os.path.abspath(__file__))
     for folder in ["uploads/faces", "uploads/iris", "uploads/fingerprints"]:
-        path = os.path.join(base, folder)
+        path = os.path.join(ROOT_DIR, folder)
         os.makedirs(path, exist_ok=True)
     print("[EVRS] Upload directories ready.")
-
-
-app = Flask(__name__)
-
-CORS(app, resources={r"/api/*": {"origins": "*"}})
-
-# ✅ NOW SAFE TO CALL
-init_db()
-ensure_upload_dirs()
-
-app.register_blueprint(voter_bp)
-app.register_blueprint(officer_bp)
-app.register_blueprint(otp_bp)
 
 
 @app.route("/")
@@ -75,4 +69,6 @@ def stats():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    init_db()
+    ensure_upload_dirs()
+    app.run(debug=True)
