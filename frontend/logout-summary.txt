@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Summary — EVRS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0e1a; --gold: #c9973a; --gold-light: #f0d98a;
+  --blue: #1a3a6b; --blue-mid: #2a5298; --blue-light: #e8eef8;
+  --green: #16a34a; --white: #ffffff; --cream: #faf8f4;
+  --border: rgba(10,14,26,0.1); --ink-muted: #6b7280;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--ink); color: var(--white); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+.bg-grid { position: fixed; inset: 0; background-image: linear-gradient(rgba(201,151,58,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,151,58,0.04) 1px, transparent 1px); background-size: 44px 44px; pointer-events: none; }
+.bg-glow { position: fixed; top: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(22,163,74,0.06) 0%, transparent 70%); pointer-events: none; }
+
+.page { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 2.5rem 1rem; position: relative; z-index: 1; }
+.wrap { width: 100%; max-width: 640px; }
+
+.summary-header { text-align: center; margin-bottom: 32px; }
+.logout-icon { font-size: 3.5rem; display: block; margin-bottom: 16px; }
+.summary-header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+.summary-header p { color: rgba(255,255,255,0.45); font-size: 0.875rem; font-weight: 300; }
+
+.session-info { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+.info-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.875rem; }
+.info-row:last-child { border-bottom: none; }
+.info-label { color: rgba(255,255,255,0.4); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.info-value { color: rgba(255,255,255,0.9); font-weight: 500; font-family: 'DM Mono', monospace; font-size: 0.85rem; }
+
+.stat-big { background: rgba(201,151,58,0.08); border: 1px solid rgba(201,151,58,0.2); border-radius: 12px; padding: 24px; text-align: center; margin-bottom: 20px; }
+.stat-big-num { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; color: var(--gold-light); line-height: 1; }
+.stat-big-label { color: rgba(255,255,255,0.45); font-size: 0.82rem; margin-top: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+.ward-section { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
+.ward-title { font-size: 0.7rem; font-weight: 700; color: rgba(201,151,58,0.8); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.ward-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.ward-row:last-child { border-bottom: none; }
+.ward-name { font-size: 0.85rem; flex: 1; color: rgba(255,255,255,0.7); }
+.ward-bar-wrap { flex: 2; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+.ward-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 3px; transition: width 0.8s ease; }
+.ward-count { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--gold-light); min-width: 28px; text-align: right; }
+
+.no-data { color: rgba(255,255,255,0.3); font-size: 0.85rem; text-align: center; padding: 16px 0; }
+
+.actions { display: flex; gap: 12px; }
+.btn-login { flex: 1; background: linear-gradient(135deg, var(--gold), #a87828); color: var(--ink); border: none; padding: 14px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; letter-spacing: 0.04em; transition: opacity 0.2s; text-decoration: none; text-align: center; }
+.btn-login:hover { opacity: 0.9; }
+.btn-home { flex: 1; background: transparent; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.15); padding: 14px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; text-decoration: none; text-align: center; transition: all 0.2s; }
+.btn-home:hover { color: white; border-color: rgba(255,255,255,0.35); }
+
+footer { text-align: center; padding: 16px; color: rgba(255,255,255,0.2); font-size: 0.75rem; position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="page">
+  <div class="wrap">
+    <div class="summary-header">
+      <span class="logout-icon">🏁</span>
+      <h1>Session Complete</h1>
+      <p>Here's a summary of today's registration activity during your session.</p>
+    </div>
+
+    <div class="session-info">
+      <div class="info-row">
+        <span class="info-label">Officer</span>
+        <span class="info-value" id="sumOfficer">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Date</span>
+        <span class="info-value" id="sumDate">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Session Ended</span>
+        <span class="info-value" id="sumTime">—</span>
+      </div>
+    </div>
+
+    <div class="stat-big">
+      <div class="stat-big-num" id="todayCount">—</div>
+      <div class="stat-big-label">Voters Enrolled Today</div>
+    </div>
+
+    <div class="ward-section">
+      <div class="ward-title">Ward-wise Registrations (Today)</div>
+      <div id="wardList"><div class="no-data">Loading…</div></div>
+    </div>
+
+    <div class="actions">
+      <a href="login.html" class="btn-login">Sign In Again</a>
+      <a href="index.html" class="btn-home">← Home</a>
+    </div>
+  </div>
+</div>
+
+<footer>EVRS &nbsp;·&nbsp; Session Closed Securely</footer>
+
+<script>
+const now = new Date();
+document.getElementById('sumDate').textContent = now.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+document.getElementById('sumTime').textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+
+// Try to get officer name from session (might still be there briefly) or localStorage
+const session = JSON.parse(sessionStorage.getItem('evrs_officer') || 'null');
+const logs = JSON.parse(localStorage.getItem('evrs_daily_log') || '[]');
+const latestLog = logs[logs.length - 1];
+const officerName = session?.name || latestLog?.officer || 'Unknown Officer';
+document.getElementById('sumOfficer').textContent = officerName;
+
+async function loadTodayStats() {
+  try {
+    const res = await fetch('http://127.0.0.1:5000/api/voters');
+    const data = await res.json();
+    const voters = data.voters || [];
+    const today = new Date().toDateString();
+    const todayVoters = voters.filter(v => v.created_at && new Date(v.created_at).toDateString() === today);
+
+    document.getElementById('todayCount').textContent = todayVoters.length;
+
+    // Ward-wise breakdown
+    const wardMap = {};
+    todayVoters.forEach(v => {
+      const ward = v.ward_number || 'Unknown Ward';
+      wardMap[ward] = (wardMap[ward] || 0) + 1;
+    });
+
+    const entries = Object.entries(wardMap).sort((a, b) => b[1] - a[1]);
+    const max = entries[0]?.[1] || 1;
+
+    const wardList = document.getElementById('wardList');
+    if (!entries.length) {
+      wardList.innerHTML = '<div class="no-data">No registrations today.</div>';
+      return;
+    }
+    wardList.innerHTML = entries.map(([ward, count]) => `
+      <div class="ward-row">
+        <span class="ward-name">Ward ${ward}</span>
+        <div class="ward-bar-wrap">
+          <div class="ward-bar" style="width:${(count/max)*100}%"></div>
+        </div>
+        <span class="ward-count">${count}</span>
+      </div>
+    `).join('');
+
+  } catch {
+    document.getElementById('todayCount').textContent = '—';
+    document.getElementById('wardList').innerHTML = '<div class="no-data">Could not load data — server offline.</div>';
+  }
+}
+
+// Clear session now
+sessionStorage.removeItem('evrs_officer');
+loadTodayStats();
+</script>
+</body>
+</html>

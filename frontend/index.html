@@ -1,208 +1,560 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Voter Identity Verification System</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVRS — Election Voter Registration System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+:root {
+  --ink: #0a0e1a;
+  --ink-soft: #2d3448;
+  --ink-muted: #6b7280;
+  --cream: #faf8f4;
+  --gold: #c9973a;
+  --gold-light: #f0d98a;
+  --gold-dark: #8a6520;
+  --blue: #1a3a6b;
+  --blue-mid: #2a5298;
+  --blue-light: #e8eef8;
+  --red: #b91c1c;
+  --green: #166534;
+  --green-light: #dcfce7;
+  --white: #ffffff;
+  --border: rgba(10,14,26,0.12);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.08);
+}
 
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── HEADER ───────────────────────────────────── */
+header {
+  background: var(--ink);
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--gold);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-emblem {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-abbr {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  line-height: 1;
+}
+
+.logo-full {
+  font-size: 10px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-login-header {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 7px 18px;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.btn-login-header:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+/* ─── HERO ──────────────────────────────────────── */
 .hero {
-padding: 70px 0;
+  background: var(--ink);
+  padding: clamp(50px, 8vw, 90px) clamp(1rem, 5vw, 4rem);
+  position: relative;
+  overflow: hidden;
 }
 
-.module-card {
-transition: transform 0.2s ease;
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 60% 50% at 80% 50%, rgba(201,151,58,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(26,58,107,0.4) 0%, transparent 60%);
+  pointer-events: none;
 }
 
-.module-card:hover {
-transform: translateY(-5px);
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(201,151,58,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,151,58,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
 }
 
+.hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(201,151,58,0.12);
+  border: 1px solid rgba(201,151,58,0.3);
+  color: var(--gold-light);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.1em;
+  margin-bottom: 28px;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+.hero p {
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  color: rgba(255,255,255,0.55);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ─── PORTAL CARDS ──────────────────────────────── */
+.portals {
+  padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 5vw, 4rem);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.portals-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.portals-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.portals-header p {
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  font-weight: 300;
+}
+
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.portal-card {
+  background: var(--white);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.portal-card-header {
+  padding: 32px 28px 24px;
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.portal-card-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 4px;
+  background: var(--gold);
+}
+
+.portal-icon {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.portal-card-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.portal-card-header p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.45);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.portal-card-body {
+  padding: 24px 28px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+.feature-dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.portal-card-footer {
+  padding: 20px 28px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+}
+
+.btn-primary {
+  flex: 1;
+  background: var(--blue);
+  color: white;
+  border: none;
+  padding: 11px 16px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary:hover { background: var(--blue-mid); }
+
+.btn-secondary {
+  flex: 1;
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--border);
+  padding: 11px 16px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover { background: var(--blue-light); border-color: var(--blue-mid); color: var(--blue); }
+
+/* ─── STATS STRIP ───────────────────────────────── */
+.stats-strip {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 28px clamp(1rem, 5vw, 4rem);
+}
+
+.stats-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 24px;
+  text-align: center;
+}
+
+.stat-item {}
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--blue);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ─── FOOTER ────────────────────────────────────── */
 footer {
-margin-top: 80px;
+  background: var(--ink);
+  color: rgba(255,255,255,0.4);
+  text-align: center;
+  padding: 24px clamp(1rem, 4vw, 3rem);
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  border-top: 2px solid var(--gold);
 }
 
+/* ─── RESPONSIVE ─────────────────────────────────  */
+@media (max-width: 600px) {
+  .logo-full { display: none; }
+  .hero h1 { font-size: 1.9rem; }
+  .portal-grid { grid-template-columns: 1fr; }
+}
 </style>
-
 </head>
+<body>
 
-<body class="bg-light">
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-emblem">🗳</div>
+    <div class="logo-text">
+      <span class="logo-abbr">EVRS</span>
+      <span class="logo-full">Election Voter Registration System</span>
+    </div>
+  </a>
+  <div class="header-right">
+    <a href="login.html" class="btn-login-header">Officer Login</a>
+  </div>
+</header>
 
-<!-- NAVBAR -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">GOVERNMENT PORTAL — SECURE ACCESS ONLY</div>
+    <h1>Multi-Biometric<br><em>Voter Identity</em> System</h1>
+    <p>A secure digital platform for election officers to register citizens and prevent duplicate or fraudulent voter identities using biometric verification technologies.</p>
+  </div>
+</section>
 
-<nav class="navbar navbar-dark bg-dark">
-<div class="container">
-
-<span class="navbar-brand fw-semibold">
-Election Identity Verification System
-</span>
-
-</div>
-</nav>
-
-<!-- SUB HEADER -->
-
-<div class="bg-white border-bottom">
-<div class="container text-center p-3">
-<small class="text-muted">
-Secure voter identity management and verification platform
-</small>
-</div>
-</div>
-
-<!-- HERO SECTION -->
-
-<div class="container hero text-center">
-
-<h1 class="fw-bold">
-
-🗳 Multi-Biometric Voter Identity System
-
-</h1>
-
-<p class="text-muted mt-3">
-
-A secure digital platform designed to prevent duplicate or fraudulent voter
-identities using biometric verification technologies such as face, iris,
-and fingerprint recognition.
-
-</p>
-
-</div>
-
-<!-- SYSTEM MODULES -->
-
-<div class="container">
-
-<h3 class="text-center mb-4">System Modules</h3>
-
-<div class="row g-4">
-
-<!-- REGISTER VOTER -->
-
-<div class="col-md-4">
-
-<div class="card module-card shadow-sm h-100">
-
-<div class="card-body text-center">
-
-<i class="bi bi-person-plus-fill fs-1 text-primary"></i>
-
-<h5 class="mt-3">Register Voter</h5>
-
-<p class="text-muted">
-
-Register voter identity details and government-issued identification before
-the election process begins.
-
-</p>
-
-<a href="register.html" class="btn btn-primary">
-Open Registration
-</a>
-
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-value" id="statVoters">—</div>
+      <div class="stat-label">Voters Enrolled</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="statOfficers">—</div>
+      <div class="stat-label">Officers Active</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">3</div>
+      <div class="stat-label">Biometric Layers</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">AES-256</div>
+      <div class="stat-label">Encryption</div>
+    </div>
+  </div>
 </div>
 
-</div>
+<section class="portals">
+  <div class="portals-header">
+    <h2>Access Portals</h2>
+    <p>Authorised election personnel only. Each portal requires verified credentials.</p>
+  </div>
 
-</div>
+  <div class="portal-grid">
 
-<!-- VERIFY VOTER -->
+    <!-- OFFICER PORTAL -->
+    <div class="portal-card">
+      <div class="portal-card-header">
+        <div class="portal-icon">👮</div>
+        <h3>Election Officer Portal</h3>
+        <p>For registration officers and poll booth duty personnel authorised by the Election Commission.</p>
+      </div>
+      <div class="portal-card-body">
+        <div class="feature-item"><div class="feature-dot"></div><span>Self-registration with employment ID</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Mobile OTP verification</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Secure 8-hour session</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Access voter registration module</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Daily ward-wise activity report</span></div>
+      </div>
+      <div class="portal-card-footer">
+        <a href="login.html" class="btn-primary">Officer Login</a>
+        <a href="officer-register.html" class="btn-secondary">Register</a>
+      </div>
+    </div>
 
-<div class="col-md-4">
+    <!-- VOTER REGISTRATION -->
+    <div class="portal-card">
+      <div class="portal-card-header">
+        <div class="portal-icon">🪪</div>
+        <h3>Voter Registration</h3>
+        <p>Register citizen voter identity with demographic details, documents, and biometric data capture.</p>
+      </div>
+      <div class="portal-card-body">
+        <div class="feature-item"><div class="feature-dot"></div><span>Full demographic data collection</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Multiple government ID support</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Ward, panchayat & district mapping</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Mobile OTP for citizen verification</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Biometric capture placeholder</span></div>
+      </div>
+      <div class="portal-card-footer">
+        <a href="register.html" class="btn-primary">Register Voter</a>
+        <a href="voters.html" class="btn-secondary">View Registry</a>
+      </div>
+    </div>
 
-<div class="card module-card shadow-sm h-100">
+    <!-- VERIFICATION PORTAL -->
+    <div class="portal-card">
+      <div class="portal-card-header" style="opacity:0.7;">
+        <div class="portal-icon">🛡️</div>
+        <h3>Poll Booth Verification</h3>
+        <p>Verify voter identity at polling stations using multi-biometric authentication against the database.</p>
+      </div>
+      <div class="portal-card-body">
+        <div class="feature-item"><div class="feature-dot"></div><span>Face recognition matching</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Iris scan verification</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Fingerprint authentication</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Fraud alert generation</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span>Real-time match scoring</span></div>
+      </div>
+      <div class="portal-card-footer">
+        <button class="btn-primary" style="opacity:0.5;cursor:not-allowed;">Coming — Phase 2</button>
+      </div>
+    </div>
 
-<div class="card-body text-center">
+  </div>
+</section>
 
-<i class="bi bi-shield-check fs-1 text-success"></i>
-
-<h5 class="mt-3">Verify Voter</h5>
-
-<p class="text-muted">
-
-Verify voter identity at polling stations using biometric authentication.
-
-</p>
-
-<button class="btn btn-secondary" disabled>
-Coming Soon
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- DASHBOARD -->
-
-<div class="col-md-4">
-
-<div class="card module-card shadow-sm h-100">
-
-<div class="card-body text-center">
-
-<i class="bi bi-speedometer2 fs-1 text-warning"></i>
-
-<h5 class="mt-3">System Dashboard</h5>
-
-<p class="text-muted">
-
-Monitor voter registrations and detect potential identity fraud alerts.
-
-</p>
-
-<button class="btn btn-secondary" disabled>
-Coming Soon
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- TECHNOLOGY STACK -->
-
-<div class="container text-center mt-5">
-
-<h5>Technology Stack</h5>
-
-<p class="text-muted">
-
-Flask REST API • SQLite Database • OpenCV • DeepFace • Mediapipe
-
-</p>
-
-</div>
-
-<!-- FOOTER -->
-
-<footer class="bg-dark text-white text-center p-3">
-
-<p class="mb-0">
-Election Commission Identity Verification System
-</p>
-
-<small>
-Secure Multi-Biometric Voter Identity Verification Platform
-</small>
-
+<footer>
+  <p>Election Voter Registration System &nbsp;·&nbsp; Government of India &nbsp;·&nbsp; Secure Multi-Biometric Platform</p>
+  <p style="margin-top:6px;font-size:0.72rem;">Authorised access only. Unauthorised use is a punishable offence under the IT Act, 2000.</p>
 </footer>
 
+<script>
+async function loadStats() {
+  try {
+    const r = await fetch('http://127.0.0.1:5000/api/stats');
+    if (!r.ok) return;
+    const d = await r.json();
+    if (d.total_voters !== undefined) document.getElementById('statVoters').textContent = d.total_voters.toLocaleString('en-IN');
+    if (d.total_officers !== undefined) document.getElementById('statOfficers').textContent = d.total_officers.toLocaleString('en-IN');
+  } catch {}
+}
+loadStats();
+</script>
 </body>
-
 </html>

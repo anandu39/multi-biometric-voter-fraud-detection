@@ -1,134 +1,374 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Voter Registry | E-VOTER AUTH PRO</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        body { background-color: #f4f7f9; font-family: 'Inter', sans-serif; }
-        .table-container { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .status-badge { font-size: 0.8rem; padding: 5px 12px; border-radius: 20px; }
-        .search-box { max-width: 400px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voter Registry — EVRS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0e1a; --ink-soft: #2d3448; --ink-muted: #6b7280;
+  --cream: #faf8f4; --gold: #c9973a; --gold-light: #f0d98a;
+  --blue: #1a3a6b; --blue-mid: #2a5298; --blue-light: #e8eef8;
+  --red: #dc2626; --green: #16a34a; --white: #ffffff;
+  --border: rgba(10,14,26,0.1);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 6px 24px rgba(0,0,0,0.09);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+header {
+  background: var(--ink); height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
+  border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 100;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-em { width: 34px; height: 34px; background: linear-gradient(135deg, var(--gold), #8a6520); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.logo-abbr { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold); letter-spacing: 0.15em; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.officer-pill { background: rgba(201,151,58,0.12); border: 1px solid rgba(201,151,58,0.25); color: var(--gold-light); padding: 5px 12px; border-radius: 100px; font-size: 0.75rem; }
+.btn-nav { background: transparent; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.12); padding: 6px 14px; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+.btn-nav:hover { color: white; border-color: rgba(255,255,255,0.3); }
+.btn-logout { color: #f87171; border-color: rgba(248,113,113,0.25); }
+
+main { max-width: 1100px; margin: 0 auto; padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 4vw, 2rem); }
+
+/* TOP BAR */
+.top-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.page-title h1 { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; }
+.page-title p { font-size: 0.82rem; color: var(--ink-muted); font-weight: 300; }
+.top-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+.search-box { position: relative; }
+.search-box input { background: var(--white); border: 1px solid var(--border); color: var(--ink); padding: 9px 14px 9px 38px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; width: 260px; outline: none; transition: border-color 0.2s; }
+.search-box input:focus { border-color: var(--blue-mid); }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; opacity: 0.4; pointer-events: none; }
+
+.filter-select { background: var(--white); border: 1px solid var(--border); color: var(--ink); padding: 9px 12px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none; cursor: pointer; }
+
+.btn-refresh { background: var(--blue); color: white; border: none; padding: 9px 16px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+.btn-refresh:hover { background: var(--blue-mid); }
+
+/* STATS ROW */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; box-shadow: var(--shadow-sm); }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--blue); line-height: 1; }
+.stat-lbl { font-size: 0.72rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 4px; font-weight: 500; }
+
+/* VOTER CARDS GRID */
+.voters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+/* VOTER CARD */
+.voter-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.voter-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.voter-card.expanded { transform: none; box-shadow: 0 8px 32px rgba(26,58,107,0.15); border-color: rgba(42,82,152,0.3); }
+
+.voter-card-top {
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.voter-avatar {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  background: var(--blue-light);
+  color: var(--blue);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.voter-id-badge { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--ink-muted); background: var(--cream); padding: 2px 8px; border-radius: 4px; }
+.voter-name { font-weight: 600; font-size: 0.95rem; color: var(--ink); margin-bottom: 4px; }
+.voter-meta { font-size: 0.78rem; color: var(--ink-muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.voter-meta span { display: flex; align-items: center; gap: 4px; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); display: inline-block; }
+
+.voter-card-footer {
+  padding: 10px 16px;
+  background: var(--cream);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+}
+.expand-icon { transition: transform 0.25s; font-size: 12px; }
+.voter-card.expanded .expand-icon { transform: rotate(180deg); }
+
+/* EXPANDED DETAILS */
+.voter-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.25s;
+  padding: 0 16px;
+}
+.voter-card.expanded .voter-details { max-height: 600px; padding: 16px; }
+
+.detail-section { margin-bottom: 14px; }
+.detail-section-title { font-size: 0.68rem; font-weight: 700; color: var(--blue-mid); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px solid var(--blue-light); }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.detail-item { font-size: 0.8rem; }
+.detail-label { color: var(--ink-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+.detail-value { color: var(--ink-soft); font-weight: 500; margin-top: 1px; }
+.doc-badge { display: inline-flex; align-items: center; gap: 5px; background: var(--blue-light); color: var(--blue); padding: 4px 10px; border-radius: 6px; font-size: 0.72rem; font-family: 'DM Mono', monospace; margin: 3px 3px 3px 0; }
+.doc-verified { background: rgba(22,163,74,0.1); color: var(--green); }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--ink-muted); }
+.empty-state .empty-icon { font-size: 3.5rem; opacity: 0.4; margin-bottom: 12px; }
+.empty-state p { font-size: 0.9rem; }
+
+/* LOADING */
+.skeleton { background: linear-gradient(90deg, #e8eef8 25%, #d0ddf0 50%, #e8eef8 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 8px; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.skel-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+.skel-line { height: 12px; margin-bottom: 8px; }
+
+@media (max-width: 640px) {
+  .voters-grid { grid-template-columns: 1fr; }
+  .search-box input { width: 200px; }
+  .top-bar { flex-direction: column; align-items: flex-start; }
+}
+</style>
 </head>
 <body>
 
-<nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container">
-        <a href="index.html" class="navbar-brand fw-bold">
-            <i class="bi bi-shield-shaded me-2"></i>E-VOTER AUTH PRO
-        </a>
-        <a href="register.html" class="btn btn-outline-primary btn-sm">New Registration</a>
-    </div>
-</nav>
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-em">🗳</div>
+    <span class="logo-abbr">EVRS</span>
+  </a>
+  <div class="header-right">
+    <span class="officer-pill" id="officerName">—</span>
+    <a href="register.html" class="btn-nav">+ Register Voter</a>
+    <button class="btn-nav btn-logout" onclick="logout()">Sign Out</button>
+  </div>
+</header>
 
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">Registered Voter Database</h2>
-        <div class="search-box input-group">
-            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
-            <input type="text" id="voterSearch" class="form-control border-start-0" placeholder="Search by name, ID or phone...">
-        </div>
+<main>
+  <div class="top-bar">
+    <div class="page-title">
+      <h1>Voter Registry</h1>
+      <p>All enrolled citizens — click any card to expand details</p>
     </div>
+    <div class="top-actions">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Name, phone, ward, district…" oninput="filterCards()">
+      </div>
+      <select class="filter-select" id="districtFilter" onchange="filterCards()">
+        <option value="">All Districts</option>
+      </select>
+      <button class="btn-refresh" onclick="loadVoters()">↻ Refresh</button>
+    </div>
+  </div>
 
-    <div class="table-container">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Voter Information</th>
-                        <th>Demographics</th>
-                        <th>Contact Details</th>
-                        <th>Reg. Date</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="voterTable">
-                    </tbody>
-            </table>
-        </div>
-        <div id="noData" class="text-center py-5 d-none">
-            <i class="bi bi-people fs-1 text-muted"></i>
-            <p class="mt-2 text-muted">No voters found in the system.</p>
-        </div>
-    </div>
-</div>
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card"><div class="stat-num" id="s-total">—</div><div class="stat-lbl">Total Enrolled</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-today">—</div><div class="stat-lbl">Registered Today</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-districts">—</div><div class="stat-lbl">Districts</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-active">—</div><div class="stat-lbl">Active Status</div></div>
+  </div>
+
+  <div id="voterGrid" class="voters-grid">
+    <!-- Skeleton loaders -->
+    ${[1,2,3,4,5,6].map(() => `
+    <div class="skel-card">
+      <div class="skeleton skel-line" style="width:60%; height:14px"></div>
+      <div class="skeleton skel-line" style="width:40%; height:10px; margin-top:6px"></div>
+      <div class="skeleton skel-line" style="width:80%; height:10px; margin-top:6px"></div>
+    </div>`).join('')}
+  </div>
+  <div class="empty-state" id="emptyState" style="display:none">
+    <div class="empty-icon">👥</div>
+    <p>No voters found matching your search.</p>
+  </div>
+</main>
 
 <script>
-async function loadVoters() {
-    const table = document.getElementById("voterTable");
-    const noData = document.getElementById("noData");
-    
-    try {
-        const response = await fetch("http://127.0.0.1:5000/api/voters");
-        const data = await response.json();
-
-        if (!data.voters || data.voters.length === 0) {
-            noData.classList.remove("d-none");
-            return;
-        }
-
-        table.innerHTML = data.voters.map(voter => `
-            <tr>
-                <td><span class="fw-bold text-primary">#${voter.voter_id}</span></td>
-                <td>
-                    <div class="fw-bold">${voter.name}</div>
-                    <small class="text-muted text-uppercase">${voter.gender}</small>
-                </td>
-                <td>
-                    <small class="d-block"><strong>DOB:</strong> ${voter.dob || 'N/A'}</small>
-                </td>
-                <td>
-                    <div class="small"><i class="bi bi-telephone me-1"></i>${voter.phone}</div>
-                    <div class="small text-muted"><i class="bi bi-envelope me-1"></i>${voter.email}</div>
-                </td>
-                <td><small>${new Date(voter.created_at).toLocaleDateString()}</small></td>
-                <td>
-                    <span class="badge status-badge bg-success-subtle text-success border border-success-subtle">
-                        Active
-                    </span>
-                </td>
-                <td>
-                    <small class="d-block"><strong>DOB:</strong> ${voter.dob || 'N/A'}</small>
-
-                    ${
-                        voter.documents && voter.documents.length
-                        ? voter.documents.map(doc => `
-                            <small class="d-block text-muted">
-                                <strong>${doc.document_type}:</strong> ${doc.document_number}
-                            </small>
-                        `).join('')
-                        : '<small class="text-muted">No IDs</small>'
-                    }
-                </td>
-            </tr>
-        `).join('');
-
-    } catch (error) {
-        console.error("Fetch error:", error);
-        table.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Error connecting to server</td></tr>`;
-    }
+const session = JSON.parse(sessionStorage.getItem('evrs_officer') || 'null');
+if (!session || session.expires < Date.now()) {
+  window.location.href = 'login.html';
+} else {
+  document.getElementById('officerName').textContent = '👮 ' + session.name;
 }
 
-// Search functionality
-document.getElementById("voterSearch").addEventListener("keyup", function() {
-    let value = this.value.toLowerCase();
-    let rows = document.querySelectorAll("#voterTable tr");
-    rows.forEach(row => {
-        row.style.display = (row.innerText.toLowerCase().indexOf(value) > -1) ? "" : "none";
-    });
-});
+let allVoters = [];
 
-function viewDetails(id) {
-    alert("Viewing detailed identity documents for Voter #" + id + "\n(This feature is coming in Phase 2)");
+function getInitials(name) {
+  return name.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+}
+
+function formatDate(str) {
+  if (!str) return 'N/A';
+  try { return new Date(str).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); }
+  catch { return str; }
+}
+
+function isToday(str) {
+  if (!str) return false;
+  return new Date(str).toDateString() === new Date().toDateString();
+}
+
+async function loadVoters() {
+  const grid = document.getElementById('voterGrid');
+  grid.innerHTML = [1,2,3,4].map(() => `
+    <div class="skel-card">
+      <div class="skeleton skel-line" style="width:65%; height:14px"></div>
+      <div class="skeleton skel-line" style="width:45%; height:10px; margin-top:8px"></div>
+      <div class="skeleton skel-line" style="width:80%; height:10px; margin-top:6px"></div>
+    </div>`).join('');
+
+  try {
+    const res = await fetch('http://127.0.0.1:5000/api/voters');
+    const data = await res.json();
+    allVoters = data.voters || [];
+    renderVoters(allVoters);
+    updateStats(allVoters);
+    populateDistrictFilter(allVoters);
+  } catch {
+    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--red); padding:40px; font-size:0.9rem;">
+      ⚠️ Cannot connect to EVRS server. Ensure Flask is running on port 5000.
+    </div>`;
+  }
+}
+
+function updateStats(voters) {
+  document.getElementById('s-total').textContent = voters.length;
+  document.getElementById('s-today').textContent = voters.filter(v => isToday(v.created_at)).length;
+  const districts = [...new Set(voters.map(v => v.district).filter(Boolean))];
+  document.getElementById('s-districts').textContent = districts.length;
+  document.getElementById('s-active').textContent = voters.filter(v => v.status === 'active').length;
+}
+
+function populateDistrictFilter(voters) {
+  const districts = [...new Set(voters.map(v => v.district).filter(Boolean))].sort();
+  const sel = document.getElementById('districtFilter');
+  districts.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d; opt.textContent = d;
+    sel.appendChild(opt);
+  });
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const district = document.getElementById('districtFilter').value;
+  const filtered = allVoters.filter(v => {
+    const matchQ = !q || [v.name, v.phone, v.email, v.ward_number, v.panchayat, v.district, v.state, v.pincode]
+      .some(f => (f || '').toLowerCase().includes(q));
+    const matchD = !district || v.district === district;
+    return matchQ && matchD;
+  });
+  renderVoters(filtered);
+  document.getElementById('emptyState').style.display = filtered.length ? 'none' : 'block';
+}
+
+function renderVoters(voters) {
+  const grid = document.getElementById('voterGrid');
+  document.getElementById('emptyState').style.display = voters.length ? 'none' : 'block';
+  if (!voters.length) { grid.innerHTML = ''; return; }
+  grid.innerHTML = voters.map(v => {
+    const docs = v.documents || [];
+    return `
+    <div class="voter-card" id="card-${v.voter_id}" onclick="toggleCard(${v.voter_id})">
+      <div class="voter-card-top">
+        <div class="voter-avatar">${getInitials(v.name)}</div>
+        <div style="flex:1; min-width:0">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px">
+            <div class="voter-name">${v.name}</div>
+          </div>
+          <div class="voter-id-badge">#${v.voter_id}</div>
+          <div class="voter-meta" style="margin-top:6px">
+            <span>⚥ ${v.gender || '—'}</span>
+            <span>📅 ${v.dob || '—'}</span>
+          </div>
+          <div class="voter-meta" style="margin-top:3px">
+            <span>📍 ${v.district || 'No district'}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="voter-details" id="details-${v.voter_id}">
+        <div class="detail-section">
+          <div class="detail-section-title">Personal Details</div>
+          <div class="detail-grid">
+            <div class="detail-item"><div class="detail-label">Full Name</div><div class="detail-value">${v.name}</div></div>
+            <div class="detail-item"><div class="detail-label">Date of Birth</div><div class="detail-value">${v.dob || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">Gender</div><div class="detail-value">${v.gender || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">Father / Guardian</div><div class="detail-value">${v.parent_name || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">Occupation</div><div class="detail-value">${v.occupation || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">Status</div><div class="detail-value"><span class="status-dot"></span> Active</div></div>
+          </div>
+        </div>
+        <div class="detail-section">
+          <div class="detail-section-title">Contact & Address</div>
+          <div class="detail-grid">
+            <div class="detail-item"><div class="detail-label">Mobile</div><div class="detail-value">${v.phone || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">Email</div><div class="detail-value">${v.email || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">Ward</div><div class="detail-value">${v.ward_number || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">Panchayat</div><div class="detail-value">${v.panchayat || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">District</div><div class="detail-value">${v.district || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">State</div><div class="detail-value">${v.state || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">PIN Code</div><div class="detail-value">${v.pincode || '—'}</div></div>
+            <div class="detail-item"><div class="detail-label">Constituency</div><div class="detail-value">${v.constituency || '—'}</div></div>
+          </div>
+        </div>
+        <div class="detail-section">
+          <div class="detail-section-title">Identity Documents</div>
+          <div>${docs.length ? docs.map(d => `
+            <span class="doc-badge ${d.verified ? 'doc-verified' : ''}">
+              ${d.verified ? '✓' : '·'} ${d.document_type}: ${d.document_number}
+            </span>`).join('') : '<span style="font-size:0.8rem; color:var(--ink-muted)">No documents recorded</span>'}</div>
+        </div>
+        <div class="detail-section" style="margin-bottom:0">
+          <div class="detail-section-title">Registration Info</div>
+          <div class="detail-grid">
+            <div class="detail-item"><div class="detail-label">Registered</div><div class="detail-value">${formatDate(v.created_at)}</div></div>
+            <div class="detail-item"><div class="detail-label">Registered By</div><div class="detail-value">${v.officer_id ? 'Officer #' + v.officer_id : 'System'}</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="voter-card-footer">
+        <span>📱 ${v.phone || '—'}</span>
+        <span>📍 ${v.ward_number ? 'Ward ' + v.ward_number : '—'}</span>
+        <span class="expand-icon">▼</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(`card-${id}`);
+  const isExpanded = card.classList.contains('expanded');
+  // Collapse all
+  document.querySelectorAll('.voter-card.expanded').forEach(c => c.classList.remove('expanded'));
+  if (!isExpanded) card.classList.add('expanded');
+}
+
+function logout() {
+  sessionStorage.removeItem('evrs_officer');
+  window.location.href = 'logout-summary.html';
 }
 
 loadVoters();
 </script>
-
 </body>
 </html>
