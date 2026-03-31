@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booth Officer Login — EVRS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0a0e1a;--ink-soft:#2d3448;--ink-muted:#6b7280;--cream:#faf8f4;--gold:#c9973a;--gold-light:#f0d98a;--blue:#1a3a6b;--blue-mid:#2a5298;--blue-light:#e8eef8;--red:#dc2626;--green:#16a34a;--white:#ffffff;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--ink);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(201,151,58,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,151,58,.04) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;}
+.bg-glow{position:fixed;top:-100px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(220,38,38,.06) 0%,transparent 70%);pointer-events:none;}
+.bg-glow2{position:fixed;bottom:-150px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(26,58,107,.3) 0%,transparent 70%);pointer-events:none;}
+
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;position:relative;z-index:1;}
+.wrap{width:100%;max-width:480px;}
+
+.back-link{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.35);font-size:.82rem;text-decoration:none;margin-bottom:28px;transition:color .2s;}
+.back-link:hover{color:var(--gold);}
+
+.header{margin-bottom:32px;}
+.logo-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.logo-em{width:42px;height:42px;background:linear-gradient(135deg,var(--gold),#8a6520);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.logo-abbr{font-family:'DM Mono',monospace;font-size:13px;color:var(--gold);letter-spacing:.15em;}
+.phase-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.25);color:#fca5a5;padding:4px 12px;border-radius:100px;font-size:.7rem;font-family:'DM Mono',monospace;letter-spacing:.08em;margin-bottom:12px;}
+.header h1{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:white;margin-bottom:8px;}
+.header p{font-size:.875rem;color:rgba(255,255,255,.4);font-weight:300;line-height:1.6;}
+
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px;backdrop-filter:blur(8px);}
+.section-sep{font-size:.68rem;font-weight:700;color:rgba(201,151,58,.7);letter-spacing:.12em;text-transform:uppercase;margin:22px 0 16px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06);}
+.form-grid{display:grid;gap:16px;}
+.cols-2{grid-template-columns:1fr 1fr;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+label{font-size:.73rem;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:.07em;text-transform:uppercase;}
+.input-wrap{position:relative;}
+.input-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;opacity:.35;}
+input,select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:white;padding:11px 13px 11px 40px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.875rem;outline:none;transition:border-color .2s;}
+select{padding-left:13px;}
+input:focus,select:focus{border-color:var(--gold);background:rgba(201,151,58,.05);}
+input::placeholder{color:rgba(255,255,255,.18);}
+select option{background:#1a1f2e;color:white;}
+
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--gold),#a87828);color:var(--ink);border:none;padding:14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:opacity .2s,transform .2s;margin-top:8px;}
+.btn-submit:hover{opacity:.9;transform:translateY(-1px);}
+.btn-submit:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+.alert{padding:12px 16px;border-radius:8px;font-size:.85rem;margin-bottom:16px;display:none;}
+.alert.error{background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
+.alert.success{background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.3);color:#86efac;}
+.alert.show{display:block;}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(10,14,26,.3);border-top-color:var(--ink);border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg);}}
+footer{text-align:center;padding:16px;color:rgba(255,255,255,.2);font-size:.75rem;position:relative;z-index:1;}
+@media(max-width:480px){.cols-2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div><div class="bg-glow"></div><div class="bg-glow2"></div>
+
+<div class="page">
+  <div class="wrap">
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <div class="header">
+      <div class="logo-row">
+        <div class="logo-em">🗳</div>
+        <span class="logo-abbr">EVRS</span>
+      </div>
+      <div class="phase-badge">🏛 ELECTION DAY — POLL BOOTH ACCESS</div>
+      <h1>Booth Officer<br>Sign In</h1>
+      <p>Use your officer credentials and select your assigned polling booth to begin voter verification.</p>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <div class="card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Mobile Number or Employee ID</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input type="text" id="identifier" placeholder="98765 43210 or EMP-XXXXX">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="password" placeholder="Your password">
+          </div>
+        </div>
+      </div>
+
+      <div class="section-sep">Booth Location</div>
+
+      <div class="form-grid">
+        <div class="form-grid cols-2">
+          <div class="form-group">
+            <label>State</label>
+            <select id="state">
+              <option value="">Select state</option>
+              <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option>
+              <option>Bihar</option><option>Chhattisgarh</option><option>Goa</option>
+              <option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option>
+              <option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+              <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option>
+              <option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option>
+              <option>Odisha</option><option>Punjab</option><option>Rajasthan</option>
+              <option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option>
+              <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option>
+              <option>West Bengal</option><option>Delhi</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>District</label>
+            <div class="input-wrap">
+              <span class="input-icon">🗺</span>
+              <input type="text" id="district" placeholder="District name">
+            </div>
+          </div>
+        </div>
+        <div class="form-grid cols-2">
+          <div class="form-group">
+            <label>Ward Number</label>
+            <div class="input-wrap">
+              <span class="input-icon">#</span>
+              <input type="text" id="ward_number" placeholder="e.g. 12">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Booth Name / Number</label>
+            <div class="input-wrap">
+              <span class="input-icon">🏛</span>
+              <input type="text" id="booth_name" placeholder="e.g. Booth 4A">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="loginBtn" onclick="handleLogin()">Begin Booth Session</button>
+    </div>
+  </div>
+</div>
+
+<footer>EVRS Election Day Module · Authorised Access Only</footer>
+
+<script>
+// If already logged in as booth officer, redirect
+const bs = JSON.parse(sessionStorage.getItem('evrs_booth')||'null');
+if (bs && bs.expires > Date.now()) window.location.href = 'booth-verify.html';
+
+function showAlert(msg, type) {
+  const b = document.getElementById('alertBox');
+  b.textContent = msg; b.className = `alert ${type} show`;
+}
+
+async function handleLogin() {
+  const identifier  = document.getElementById('identifier').value.trim();
+  const password    = document.getElementById('password').value;
+  const state       = document.getElementById('state').value;
+  const district    = document.getElementById('district').value.trim();
+  const ward_number = document.getElementById('ward_number').value.trim();
+  const booth_name  = document.getElementById('booth_name').value.trim();
+
+  if (!identifier || !password) { showAlert('Enter your credentials.','error'); return; }
+  if (!state || !district || !ward_number) { showAlert('Select state, district, and ward.','error'); return; }
+
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Verifying…';
+
+  try {
+    const res = await fetch('http://127.0.0.1:5000/api/booth/login', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({identifier, password, state, district, ward_number, booth_name})
+    });
+    const data = await res.json();
+
+    if (!res.ok) { showAlert(data.error||'Login failed.','error'); return; }
+
+    sessionStorage.setItem('evrs_booth', JSON.stringify({
+      officer_id:   data.officer_id,
+      officer_name: data.officer_name,
+      role:         data.role,
+      booth:        data.booth_context,
+      expires:      Date.now() + 8 * 60 * 60 * 1000
+    }));
+
+    showAlert('Login successful! Loading booth…','success');
+    setTimeout(() => window.location.href = 'booth-verify.html', 800);
+
+  } catch {
+    showAlert('Cannot connect to server.','error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Begin Booth Session';
+  }
+}
+document.addEventListener('keydown', e => { if(e.key==='Enter') handleLogin(); });
+</script>
+</body>
+</html>

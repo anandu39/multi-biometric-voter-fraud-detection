@@ -532,7 +532,7 @@ footer {
         <div class="feature-item"><div class="feature-dot"></div><span>Real-time match scoring</span></div>
       </div>
       <div class="portal-card-footer">
-        <button class="btn-primary" style="opacity:0.5;cursor:not-allowed;">Coming — Phase 2</button>
+        <a href="booth-login.html" class="btn-primary">Open Booth Verification</a>
       </div>
     </div>
 
@@ -552,6 +552,7 @@ async function loadStats() {
     const d = await r.json();
     if (d.total_voters !== undefined) document.getElementById('statVoters').textContent = d.total_voters.toLocaleString('en-IN');
     if (d.total_officers !== undefined) document.getElementById('statOfficers').textContent = d.total_officers.toLocaleString('en-IN');
+    if (d.fraud_alerts !== undefined && document.getElementById('statFraud')) document.getElementById('statFraud').textContent = d.fraud_alerts.toLocaleString('en-IN');
   } catch {}
 }
 loadStats();
