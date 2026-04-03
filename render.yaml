@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: evrs-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --chdir backend app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
+    envVars:
+      - key: RENDER
+        value: "true"
+      - key: FAST2SMS_KEY
+        sync: false          # Set manually in Render dashboard (secret)
+      - key: ALLOWED_ORIGIN
+        value: "*"           # Change to your Render frontend URL after deploy
+    healthCheckPath: /api/health

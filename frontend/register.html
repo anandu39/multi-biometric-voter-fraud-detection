@@ -1,599 +1,637 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Voter Enrollment | E-VOTER AUTH PRO</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voter Enrollment — EVRS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
-body{
-font-family:'Inter',sans-serif;
-background-color:#f4f7f9;
+:root {
+  --ink: #0a0e1a; --ink-soft: #2d3448; --ink-muted: #6b7280;
+  --cream: #faf8f4; --gold: #c9973a; --gold-light: #f0d98a; --gold-dark: #8a6520;
+  --blue: #1a3a6b; --blue-mid: #2a5298; --blue-light: #e8eef8;
+  --red: #dc2626; --green: #16a34a; --white: #ffffff;
+  --border: rgba(10,14,26,0.12);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.10);
 }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
 
-.navbar{
-border-bottom:3px solid #0d6efd;
-}
+/* HEADER */
+header { background: var(--ink); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1rem,4vw,2.5rem); border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 100; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-em { width: 36px; height: 36px; background: linear-gradient(135deg,var(--gold),var(--gold-dark)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.logo-abbr { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold); letter-spacing: .15em; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.officer-badge { font-size: .78rem; color: rgba(255,255,255,.5); font-family: 'DM Mono', monospace; }
+.officer-name { color: var(--gold-light); font-weight: 500; }
+.btn-logout { background: transparent; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.5); padding: 5px 14px; border-radius: 6px; font-size: .8rem; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s; }
+.btn-logout:hover { border-color: var(--red); color: #fca5a5; }
 
-.registration-card{
-border:none;
-border-radius:16px;
-}
+/* STEP BAR */
+.step-bar-wrap { background: white; border-bottom: 1px solid var(--border); padding: 14px clamp(1rem,4vw,2.5rem); box-shadow: var(--shadow-sm); }
+.step-bar { max-width: 720px; margin: 0 auto; display: flex; align-items: center; }
+.step { display: flex; align-items: center; gap: 8px; flex: 1; }
+.step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 700; font-family: 'DM Mono', monospace; flex-shrink: 0; border: 2px solid var(--border); color: var(--ink-muted); background: var(--cream); transition: all .3s; }
+.step.active .step-num { background: var(--blue); color: white; border-color: var(--blue); }
+.step.done .step-num { background: var(--green); color: white; border-color: var(--green); }
+.step-label { font-size: .75rem; font-weight: 600; color: var(--ink-muted); }
+.step.active .step-label { color: var(--blue); }
+.step.done .step-label { color: var(--green); }
+.step-div { width: 24px; height: 2px; background: var(--border); flex-shrink: 0; margin: 0 6px; transition: background .3s; }
+.step-div.done { background: var(--green); }
+@media(max-width:480px){ .step-label { display: none; } }
 
-.form-section-header{
-border-left:5px solid #0d6efd;
-padding-left:15px;
-margin:35px 0 20px 0;
-font-weight:700;
-text-transform:uppercase;
-font-size:0.85rem;
-color:#495057;
-}
+/* MAIN */
+.main { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 4rem; }
 
-.btn-register{
-padding:14px 40px;
-font-weight:600;
-border-radius:12px;
-transition:all 0.3s;
-}
+/* CARD */
+.card { background: white; border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 1.5rem; }
+.card-header { background: var(--ink); padding: 20px 28px; border-bottom: 3px solid var(--gold); }
+.card-header h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: white; margin-bottom: 4px; }
+.card-header p { font-size: .82rem; color: rgba(255,255,255,.4); font-weight: 300; }
+.card-body { padding: 28px; }
 
-.btn-register:hover{
-transform:translateY(-2px);
-box-shadow:0 5px 15px rgba(13,110,253,0.3);
-}
+/* SECTION LABEL */
+.sec-label { font-size: .68rem; font-weight: 700; color: rgba(201,151,58,.8); letter-spacing: .12em; text-transform: uppercase; margin: 24px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.sec-label:first-child { margin-top: 0; }
 
-.remove-doc{
-margin-top:32px;
-}
+/* FORM GRID */
+.fg { display: grid; gap: 16px; }
+.cols-2 { grid-template-columns: 1fr 1fr; }
+.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.cols-1-2 { grid-template-columns: 1fr 2fr; }
+@media(max-width:600px){ .cols-2,.cols-3,.cols-1-2 { grid-template-columns: 1fr; } }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+label { font-size: .73rem; font-weight: 600; color: var(--ink-muted); letter-spacing: .06em; text-transform: uppercase; }
+label .req { color: var(--red); }
+input[type="text"], input[type="tel"], input[type="email"], input[type="date"], select, textarea {
+  width: 100%; padding: 10px 13px; background: white; border: 1.5px solid var(--border);
+  border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: .9rem; color: var(--ink);
+  outline: none; transition: border-color .2s; }
+input:focus, select:focus, textarea:focus { border-color: var(--gold); background: #fffdf8; }
+input::placeholder, textarea::placeholder { color: rgba(10,14,26,.25); }
+textarea { resize: vertical; min-height: 72px; }
+.hint { font-size: .72rem; color: var(--ink-muted); margin-top: 3px; }
 
+/* OTP INLINE */
+.otp-row { display: flex; gap: 8px; align-items: flex-end; }
+.otp-row input { flex: 1; }
+.btn-otp { background: var(--blue); color: white; border: none; padding: 10px 16px; border-radius: 8px; font-size: .82rem; font-weight: 600; cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; transition: background .2s; }
+.btn-otp:hover { background: var(--blue-mid); }
+.btn-otp:disabled { opacity: .5; cursor: not-allowed; }
+.otp-verify-row { display: flex; gap: 8px; margin-top: 10px; }
+.otp-verify-row input { flex: 1; font-family: 'DM Mono', monospace; letter-spacing: .2em; font-size: 1rem; }
+.btn-verify { background: var(--green); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-size: .82rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.otp-status { font-size: .78rem; margin-top: 6px; display: none; }
+.otp-status.ok { color: var(--green); }
+.otp-status.err { color: var(--red); }
 
-.step-bar{display:flex;align-items:center;margin-bottom:24px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 18px;box-shadow:var(--shadow-sm);}
-.step{display:flex;align-items:center;gap:8px;flex:1;}
-.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;font-family:'DM Mono',monospace;flex-shrink:0;border:2px solid var(--border);color:var(--ink-muted);background:var(--cream);transition:all .3s;}
-.step.active .step-num{background:var(--blue);color:white;border-color:var(--blue);}
-.step.done .step-num{background:var(--green);color:white;border-color:var(--green);}
-.step-label{font-size:.75rem;font-weight:600;color:var(--ink-muted);}
-.step.active .step-label{color:var(--blue);}
-.step.done .step-label{color:var(--green);}
-.step-div{width:20px;height:2px;background:var(--border);flex-shrink:0;margin:0 4px;transition:background .3s;}
-.step-div.done{background:var(--green);}
-@media(max-width:480px){.step-label{display:none;}}
+/* DOC ROWS */
+.doc-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+@media(max-width:540px){ .doc-row { grid-template-columns: 1fr; } }
+.btn-rm { background: transparent; border: 1.5px solid rgba(220,38,38,.3); color: var(--red); padding: 9px 14px; border-radius: 8px; cursor: pointer; font-size: .82rem; font-family: 'DM Sans', sans-serif; transition: all .2s; white-space: nowrap; }
+.btn-rm:hover { background: rgba(220,38,38,.06); border-color: var(--red); }
+.btn-add-doc { background: transparent; border: 1.5px dashed var(--border); color: var(--blue); padding: 9px 16px; border-radius: 8px; cursor: pointer; font-size: .82rem; font-weight: 600; font-family: 'DM Sans', sans-serif; transition: all .2s; }
+.btn-add-doc:hover { border-color: var(--blue); background: var(--blue-light); }
+
+/* BOTTOM BAR */
+.bottom-bar { display: flex; align-items: center; justify-content: space-between; padding-top: 20px; border-top: 1px solid var(--border); }
+.secure-note { font-size: .78rem; color: var(--ink-muted); }
+.btn-submit { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--ink); border: none; padding: 13px 36px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 700; cursor: pointer; letter-spacing: .04em; transition: opacity .2s, transform .2s; }
+.btn-submit:hover { opacity: .9; transform: translateY(-1px); }
+.btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* ALERT */
+.alert { padding: 12px 16px; border-radius: 8px; font-size: .85rem; margin-top: 16px; display: none; }
+.alert.err { background: rgba(220,38,38,.07); border: 1px solid rgba(220,38,38,.2); color: #b91c1c; }
+.alert.ok { background: rgba(22,163,74,.07); border: 1px solid rgba(22,163,74,.2); color: #15803d; }
+.alert.show { display: block; }
+
+/* BIO STEP */
+.bio-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+@media(max-width:540px){ .bio-grid { grid-template-columns: 1fr; } }
+.bio-slot { border: 2px dashed var(--border); border-radius: 10px; padding: 18px; text-align: center; cursor: pointer; transition: border-color .2s; }
+.bio-slot:hover { border-color: var(--gold); }
+.bio-slot.uploaded { border-color: var(--green); border-style: solid; }
+.bio-icon { font-size: 2rem; margin-bottom: 8px; }
+.bio-title { font-size: .8rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.bio-sub { font-size: .72rem; color: var(--ink-muted); margin-bottom: 12px; }
+.bio-status { font-size: .72rem; color: var(--ink-muted); margin-top: 6px; min-height: 16px; }
+.bio-slot.uploaded .bio-status { color: var(--green); }
+.bio-slot input[type="file"] { display: none; }
+.btn-file { background: var(--cream); border: 1px solid var(--border); color: var(--ink-soft); padding: 6px 14px; border-radius: 6px; font-size: .78rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.bio-preview { width: 100%; max-height: 100px; object-fit: cover; border-radius: 6px; margin-top: 8px; display: none; }
+.dup-warn { background: rgba(220,38,38,.07); border: 1px solid rgba(220,38,38,.2); color: #b91c1c; padding: 10px 14px; border-radius: 8px; font-size: .82rem; margin-top: 12px; display: none; }
+
+/* COMPLETE STEP */
+.complete-card { text-align: center; padding: 40px 28px; }
+.complete-icon { font-size: 3.5rem; margin-bottom: 16px; }
+.complete-card h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--ink); margin-bottom: 8px; }
+.complete-card p { color: var(--ink-muted); font-size: .9rem; margin-bottom: 4px; }
+.voter-id-badge { display: inline-block; background: var(--ink); color: var(--gold-light); font-family: 'DM Mono', monospace; font-size: 1.1rem; padding: 8px 24px; border-radius: 8px; margin: 16px 0; letter-spacing: .1em; }
+.bio-summary { font-size: .82rem; color: var(--green); margin-bottom: 20px; }
+.complete-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-new { background: var(--blue); color: white; border: none; padding: 12px 28px; border-radius: 8px; font-size: .875rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.btn-view { background: transparent; border: 1.5px solid var(--border); color: var(--ink-soft); padding: 12px 28px; border-radius: 8px; font-size: .875rem; text-decoration: none; font-family: 'DM Sans', sans-serif; }
+
+/* SPINNER */
+.spin { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(0,0,0,.15); border-top-color: var(--ink); border-radius: 50%; animation: sp .7s linear infinite; margin-right: 7px; vertical-align: middle; }
+@keyframes sp { to { transform: rotate(360deg); } }
+
+/* DISPLAY NONE HELPER */
+.hidden { display: none !important; }
 </style>
-
 </head>
-
 <body>
 
-<nav class="navbar navbar-dark bg-dark sticky-top">
-<div class="container">
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-em">🗳</div>
+    <span class="logo-abbr">EVRS</span>
+  </a>
+  <div class="header-right">
+    <span class="officer-badge">Signed in as <span class="officer-name" id="officerName">—</span></span>
+    <button class="btn-logout" onclick="doLogout()">Logout</button>
+  </div>
+</header>
 
-<a href="index.html" class="navbar-brand fw-bold d-flex align-items-center">
-<i class="bi bi-shield-shaded me-2 text-primary"></i>
-E-VOTER AUTH PRO
-</a>
-
-<span class="badge bg-success-subtle text-success border border-success-subtle">
-Secure Session Active
-</span>
-
-</div>
-</nav>
-
-<div class="container mt-4 mb-5">
-
-<div class="row justify-content-center">
-
-<div class="col-lg-10">
-
-<div class="card registration-card shadow-lg">
-
-<div class="card-body p-4 p-md-5">
-
-<div class="text-center mb-5">
-
-<h2 class="fw-bold">Voter Identity Enrollment</h2>
-
-<p class="text-muted">
-Standard protocol for citizen demographic and identity data collection
-</p>
-
+<!-- STEP BAR -->
+<div class="step-bar-wrap">
+  <div class="step-bar">
+    <div class="step active" id="si1">
+      <div class="step-num" id="sn1">1</div>
+      <span class="step-label">Demographics</span>
+    </div>
+    <div class="step-div" id="sdiv1"></div>
+    <div class="step" id="si2">
+      <div class="step-num" id="sn2">2</div>
+      <span class="step-label">Biometrics</span>
+    </div>
+    <div class="step-div" id="sdiv2"></div>
+    <div class="step" id="si3">
+      <div class="step-num" id="sn3">3</div>
+      <span class="step-label">Complete</span>
+    </div>
+  </div>
 </div>
 
-<form id="registerForm">
+<div class="main">
 
-<div class="form-section-header">Citizen Demographics</div>
+  <!-- ── STEP 1: DEMOGRAPHICS ── -->
+  <div id="step1">
+    <div class="card">
+      <div class="card-header">
+        <h2>Voter Enrollment</h2>
+        <p>Enter citizen demographic data and identity documents to register a new voter.</p>
+      </div>
+      <div class="card-body">
 
-<div class="row g-3">
+        <div class="sec-label">Personal Information</div>
+        <div class="fg cols-2">
+          <div class="form-group" style="grid-column:1/-1">
+            <label>Legal Full Name <span class="req">*</span></label>
+            <input type="text" id="name" maxlength="100" placeholder="As per government ID" required>
+          </div>
+          <div class="form-group">
+            <label>Date of Birth <span class="req">*</span></label>
+            <input type="date" id="dob" required>
+          </div>
+          <div class="form-group">
+            <label>Gender <span class="req">*</span></label>
+            <select id="gender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Parent / Guardian Name <span class="req">*</span></label>
+            <input type="text" id="parent_name" maxlength="100" placeholder="Father or mother's name" required>
+          </div>
+          <div class="form-group">
+            <label>Occupation</label>
+            <input type="text" id="occupation" maxlength="80" placeholder="e.g. Farmer, Teacher">
+          </div>
+        </div>
 
-<div class="col-md-7">
+        <div class="sec-label">Contact Details</div>
+        <div class="fg cols-2">
+          <div class="form-group">
+            <label>Mobile Number <span class="req">*</span></label>
+            <div class="otp-row">
+              <input type="tel" id="phone" maxlength="10" placeholder="10-digit number" required>
+              <button type="button" class="btn-otp" id="sendOtpBtn" onclick="sendOtp()">Send OTP</button>
+            </div>
+            <div class="otp-verify-row hidden" id="otpRow">
+              <input type="text" id="otpInput" maxlength="6" placeholder="Enter OTP">
+              <button type="button" class="btn-verify" onclick="verifyOtp()">Verify</button>
+            </div>
+            <div class="otp-status" id="otpStatus"></div>
+          </div>
+          <div class="form-group">
+            <label>Email (Optional)</label>
+            <input type="email" id="email" maxlength="100" placeholder="citizen@email.com">
+          </div>
+        </div>
 
-<label class="form-label fw-semibold">Legal Full Name</label>
+        <div class="sec-label">Address Details</div>
+        <div class="fg">
+          <div class="fg cols-2">
+            <div class="form-group">
+              <label>Street / House No. <span class="req">*</span></label>
+              <input type="text" id="street" maxlength="200" placeholder="Door no., street name" required>
+            </div>
+            <div class="form-group">
+              <label>Ward Number <span class="req">*</span></label>
+              <input type="text" id="ward_number" maxlength="20" placeholder="e.g. 12 or 7A" required>
+            </div>
+          </div>
+          <div class="fg cols-3">
+            <div class="form-group">
+              <label>Panchayat / Town <span class="req">*</span></label>
+              <input type="text" id="panchayat" maxlength="100" placeholder="Gram panchayat" required>
+            </div>
+            <div class="form-group">
+              <label>Taluk</label>
+              <input type="text" id="taluk" maxlength="100" placeholder="Taluk / Block">
+            </div>
+            <div class="form-group">
+              <label>District <span class="req">*</span></label>
+              <input type="text" id="district" maxlength="100" placeholder="District" required>
+            </div>
+          </div>
+          <div class="fg cols-3">
+            <div class="form-group">
+              <label>State <span class="req">*</span></label>
+              <select id="state" required>
+                <option value="">Select state</option>
+                <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option>
+                <option>Bihar</option><option>Chhattisgarh</option><option>Goa</option>
+                <option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option>
+                <option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+                <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option>
+                <option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option>
+                <option>Odisha</option><option>Punjab</option><option>Rajasthan</option>
+                <option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option>
+                <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option>
+                <option>West Bengal</option><option>Delhi</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Pincode <span class="req">*</span></label>
+              <input type="text" id="pincode" maxlength="6" placeholder="6-digit pincode" required>
+            </div>
+            <div class="form-group">
+              <label>Constituency</label>
+              <input type="text" id="constituency" maxlength="100" placeholder="Assembly constituency">
+            </div>
+          </div>
+        </div>
 
-<input type="text"
-class="form-control form-control-lg"
-id="name"
-maxlength="100"
-pattern="[A-Za-z\s]+"
-required>
+        <div class="sec-label">Identity Documents</div>
+        <div id="documentsContainer"></div>
+        <button type="button" class="btn-add-doc" onclick="addDocRow()">+ Add Identity Document</button>
 
-</div>
+        <div class="alert" id="step1Alert"></div>
 
-<div class="col-md-5">
+        <div class="bottom-bar">
+          <span class="secure-note">🔒 Encrypted local submission</span>
+          <button class="btn-submit" id="submitBtn" onclick="submitStep1()">
+            Save &amp; Continue →
+          </button>
+        </div>
 
-<label class="form-label fw-semibold">Date of Birth</label>
+      </div>
+    </div>
+  </div>
 
-<input type="date"
-class="form-control form-control-lg"
-id="dob"
-required>
+  <!-- ── STEP 2: BIOMETRICS ── -->
+  <div id="step2" class="hidden">
+    <div class="card">
+      <div class="card-header">
+        <h2>Biometric Capture</h2>
+        <p>Upload face photo (required), iris scan and fingerprint (optional).</p>
+      </div>
+      <div class="card-body">
+        <div class="sec-label">Upload Photos</div>
+        <div class="bio-grid">
+          <!-- Face -->
+          <div class="bio-slot" id="faceSlot" onclick="document.getElementById('faceFile').click()">
+            <input type="file" id="faceFile" accept="image/*" onchange="previewBio(this,'faceSlot','faceStatus','facePreview')">
+            <div class="bio-icon">📸</div>
+            <div class="bio-title">Face Photo</div>
+            <div class="bio-sub">Required — front-facing, clear background</div>
+            <button type="button" class="btn-file" onclick="event.stopPropagation();document.getElementById('faceFile').click()">Choose Photo</button>
+            <div class="bio-status" id="faceStatus">No file selected</div>
+            <img class="bio-preview" id="facePreview">
+          </div>
+          <!-- Iris -->
+          <div class="bio-slot" id="irisSlot" onclick="document.getElementById('irisFile').click()">
+            <input type="file" id="irisFile" accept="image/*" onchange="previewBio(this,'irisSlot','irisStatus',null)">
+            <div class="bio-icon">👁</div>
+            <div class="bio-title">Iris Scan</div>
+            <div class="bio-sub">Optional — close-up of eye</div>
+            <button type="button" class="btn-file" onclick="event.stopPropagation();document.getElementById('irisFile').click()">Choose Photo</button>
+            <div class="bio-status" id="irisStatus">Optional</div>
+          </div>
+          <!-- Fingerprint -->
+          <div class="bio-slot" id="fpSlot" onclick="document.getElementById('fpFile').click()">
+            <input type="file" id="fpFile" accept="image/*" onchange="previewBio(this,'fpSlot','fpStatus',null)">
+            <div class="bio-icon">🖐</div>
+            <div class="bio-title">Fingerprint</div>
+            <div class="bio-sub">Optional — scanned print image</div>
+            <button type="button" class="btn-file" onclick="event.stopPropagation();document.getElementById('fpFile').click()">Choose Image</button>
+            <div class="bio-status" id="fpStatus">Optional</div>
+          </div>
+        </div>
+        <div class="dup-warn" id="dupWarn"></div>
+        <div class="alert" id="bioAlert"></div>
+        <div class="bottom-bar">
+          <button class="btn-submit" style="background:transparent;border:1.5px solid var(--border);color:var(--ink-muted);" onclick="skipBio()">Skip for now</button>
+          <button class="btn-submit" id="bioBtn" onclick="submitBio()">Save Biometrics &amp; Finish</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-</div>
+  <!-- ── STEP 3: COMPLETE ── -->
+  <div id="step3" class="hidden">
+    <div class="card">
+      <div class="complete-card">
+        <div class="complete-icon">✅</div>
+        <h2>Voter Enrolled Successfully</h2>
+        <p>The voter has been registered in the EVRS database.</p>
+        <div class="voter-id-badge" id="finalId">—</div>
+        <p class="bio-summary" id="bioSummary"></p>
+        <div class="complete-actions">
+          <button class="btn-new" onclick="startOver()">Register Another Voter</button>
+          <a href="voters.html" class="btn-view">View All Voters →</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="col-md-4">
-
-<label class="form-label fw-semibold">Gender</label>
-
-<select class="form-select form-select-lg" id="gender">
-<option value="Male">Male</option>
-<option value="Female">Female</option>
-<option value="Other">Other</option>
-</select>
-
-</div>
-
-<div class="col-md-4">
-
-<label class="form-label fw-semibold">Phone Number</label>
-
-<input type="tel"
-class="form-control form-control-lg"
-id="phone"
-maxlength="12"
-placeholder="98765 43210"
-required>
-
-</div>
-
-<div class="col-md-4">
-
-<label class="form-label fw-semibold">Email (Optional)</label>
-
-<input type="email"
-class="form-control form-control-lg"
-id="email"
-maxlength="100">
-
-</div>
-
-<div class="col-12">
-
-<label class="form-label fw-semibold">Address</label>
-
-<textarea class="form-control"
-id="address"
-rows="2"
-maxlength="300"
-required></textarea>
-
-</div>
-
-</div>
-
-<div class="form-section-header">Identity Documents</div>
-
-<div id="documentsContainer">
-
-<div class="row g-3 document-row">
-
-<div class="col-md-5">
-
-<label class="form-label fw-semibold">ID Type</label>
-
-<select class="form-select form-select-lg document-type">
-
-<option value="AADHAAR">Aadhaar</option>
-<option value="VOTER_ID">Voter ID</option>
-<option value="PASSPORT">Passport</option>
-<option value="DRIVING_LICENSE">Driving License</option>
-
-</select>
-
-</div>
-
-<div class="col-md-5">
-
-<label class="form-label fw-semibold">ID Number</label>
-
-<input type="text"
-class="form-control form-control-lg document-number"
-placeholder="Enter ID Number"
-required>
-
-</div>
-
-<div class="col-md-2">
-
-<button type="button"
-class="btn btn-outline-danger remove-doc">
-Remove
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="mt-3">
-
-<button type="button"
-id="addDocument"
-class="btn btn-outline-primary">
-
-<i class="bi bi-plus-circle"></i>
-Add Another ID
-
-</button>
-
-</div>
-
-<div class="mt-5 pt-4 border-top d-flex justify-content-between align-items-center">
-
-<div class="text-muted small">
-<i class="bi bi-lock-fill text-success"></i>
-Secure encrypted submission
-</div>
-
-<button type="submit"
-id="submitBtn"
-class="btn btn-primary btn-register px-5">
-
-<i class="bi bi-person-plus-fill me-2"></i>
-Confirm Enrollment
-
-</button>
-
-</div>
-
-</form>
-
-<div id="message" class="mt-4"></div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+</div><!-- /main -->
 
 <script>
+// ── Session guard ─────────────────────────────────────────────────────────
+const session = JSON.parse(sessionStorage.getItem('evrs_officer') || 'null');
+if (!session || session.expires < Date.now()) {
+  window.location.href = 'login.html';
+}
+document.getElementById('officerName').textContent = session.name || '—';
 
-/* Prevent future DOB */
-document.getElementById('dob').max = new Date().toISOString().split("T")[0];
-
-/* PHONE AUTO FORMAT */
-
-document.getElementById("phone").addEventListener("input",function(){
-
-let digits=this.value.replace(/\D/g,'')
-
-if(digits.length>5){
-this.value=digits.substring(0,5)+" "+digits.substring(5,10)
-}else{
-this.value=digits
+function doLogout() {
+  sessionStorage.removeItem('evrs_officer');
+  window.location.href = 'logout-summary.html';
 }
 
-})
+// ── State ─────────────────────────────────────────────────────────────────
+let otpVerified = false;
+let enrolledVoterId = null;
 
-/* AADHAAR AUTO FORMAT */
+// ── Set DOB max ───────────────────────────────────────────────────────────
+document.getElementById('dob').max = new Date().toISOString().split('T')[0];
 
-document.addEventListener("input",function(e){
-
-if(e.target.classList.contains("document-number")){
-
-let digits=e.target.value.replace(/\D/g,'')
-
-let formatted=digits.match(/.{1,4}/g)
-
-if(formatted){
-e.target.value=formatted.join(" ")
-}else{
-e.target.value=digits
+// ── Sanitize ──────────────────────────────────────────────────────────────
+function sanitize(s) {
+  if (!s) return '';
+  return s.replace(/[<>'"\/\\]/g,'').replace(/\s+/g,' ').trim();
 }
 
+// ── Show alert ────────────────────────────────────────────────────────────
+function showAlert(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'alert ' + type + ' show';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-})
+// ── Phone input – digits only ─────────────────────────────────────────────
+document.getElementById('phone').addEventListener('input', function(){
+  this.value = this.value.replace(/\D/g,'').slice(0,10);
+});
+document.getElementById('pincode').addEventListener('input', function(){
+  this.value = this.value.replace(/\D/g,'').slice(0,6);
+});
 
-/* ADD DOCUMENT ROW */
-
-document.getElementById("addDocument").addEventListener("click",function(){
-
-const container=document.getElementById("documentsContainer")
-
-const row=document.createElement("div")
-row.className="row g-3 document-row mt-2"
-
-row.innerHTML=`
-
-<div class="col-md-5">
-
-<select class="form-select form-select-lg document-type">
-
-<option value="AADHAAR">Aadhaar</option>
-<option value="VOTER_ID">Voter ID</option>
-<option value="PASSPORT">Passport</option>
-<option value="DRIVING_LICENSE">Driving License</option>
-
-</select>
-
-</div>
-
-<div class="col-md-5">
-
-<input type="text"
-class="form-control form-control-lg document-number"
-placeholder="Enter ID Number"
-required>
-
-</div>
-
-<div class="col-md-2">
-
-<button type="button"
-class="btn btn-outline-danger remove-doc">
-Remove
-</button>
-
-</div>
-`
-
-container.appendChild(row)
-
-})
-
-/* REMOVE DOCUMENT */
-
-document.addEventListener("click",function(e){
-
-if(e.target.classList.contains("remove-doc")){
-
-const rows=document.querySelectorAll(".document-row")
-
-if(rows.length>1){
-e.target.closest(".document-row").remove()
+// ── OTP ───────────────────────────────────────────────────────────────────
+async function sendOtp() {
+  const phone = document.getElementById('phone').value.trim();
+  if (phone.length !== 10) { showAlert('step1Alert','Enter a valid 10-digit mobile number first.','err'); return; }
+  const btn = document.getElementById('sendOtpBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    const res = await fetch('http://127.0.0.1:5000/api/send-otp', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ mobile: phone })
+    });
+    const data = await res.json();
+    if (!res.ok) { showAlert('step1Alert', data.error || 'OTP failed', 'err'); return; }
+    document.getElementById('otpRow').classList.remove('hidden');
+    const st = document.getElementById('otpStatus');
+    st.textContent = 'OTP sent to +91 ' + phone + (data.otp ? ' [DEV: ' + data.otp + ']' : '');
+    st.className = 'otp-status ok'; st.style.display = 'block';
+    btn.textContent = 'Resend OTP';
+  } catch { showAlert('step1Alert','Server unreachable. Is Flask running?','err'); }
+  finally { btn.disabled = false; }
 }
 
+async function verifyOtp() {
+  const phone = document.getElementById('phone').value.trim();
+  const otp   = document.getElementById('otpInput').value.trim();
+  if (!otp) { document.getElementById('otpStatus').textContent = 'Enter the OTP.'; document.getElementById('otpStatus').className='otp-status err'; document.getElementById('otpStatus').style.display='block'; return; }
+  try {
+    const res = await fetch('http://127.0.0.1:5000/api/verify-otp', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ mobile: phone, otp })
+    });
+    const data = await res.json();
+    const st = document.getElementById('otpStatus');
+    if (res.ok) {
+      otpVerified = true;
+      st.textContent = '✓ Mobile verified';
+      st.className = 'otp-status ok'; st.style.display = 'block';
+      document.getElementById('otpRow').classList.add('hidden');
+      document.getElementById('sendOtpBtn').textContent = '✓ Verified';
+      document.getElementById('sendOtpBtn').disabled = true;
+    } else {
+      st.textContent = data.error || 'Invalid OTP.';
+      st.className = 'otp-status err'; st.style.display = 'block';
+    }
+  } catch { document.getElementById('otpStatus').textContent = 'Server error.'; document.getElementById('otpStatus').className='otp-status err'; document.getElementById('otpStatus').style.display='block'; }
 }
 
-})
+// ── Documents ─────────────────────────────────────────────────────────────
+function addDocRow(type='AADHAAR', number='') {
+  const c = document.getElementById('documentsContainer');
+  const d = document.createElement('div');
+  d.className = 'doc-row';
+  d.innerHTML = `
+    <div class="form-group">
+      <label>Document Type</label>
+      <select class="doc-type">
+        <option value="AADHAAR" ${type==='AADHAAR'?'selected':''}>Aadhaar</option>
+        <option value="VOTER_ID" ${type==='VOTER_ID'?'selected':''}>Voter ID</option>
+        <option value="PASSPORT" ${type==='PASSPORT'?'selected':''}>Passport</option>
+        <option value="DRIVING_LICENSE" ${type==='DRIVING_LICENSE'?'selected':''}>Driving License</option>
+        <option value="PAN" ${type==='PAN'?'selected':''}>PAN Card</option>
+        <option value="RATION_CARD" ${type==='RATION_CARD'?'selected':''}>Ration Card</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Document Number</label>
+      <input type="text" class="doc-number" placeholder="Enter ID number" value="${number}">
+    </div>
+    <button type="button" class="btn-rm" onclick="removeDocRow(this)">✕ Remove</button>
+  `;
+  c.appendChild(d);
+}
+function removeDocRow(btn) {
+  const rows = document.querySelectorAll('.doc-row');
+  if (rows.length > 1) btn.closest('.doc-row').remove();
+}
+addDocRow(); // default first row
 
-function sanitize(str){
+// ── Step 1 submit ─────────────────────────────────────────────────────────
+async function submitStep1() {
+  const required = {
+    name: 'Full Name', dob: 'Date of Birth', parent_name: 'Parent Name',
+    phone: 'Phone Number', street: 'Street', ward_number: 'Ward Number',
+    panchayat: 'Panchayat', district: 'District', state: 'State', pincode: 'Pincode'
+  };
+  for (const [id, label] of Object.entries(required)) {
+    if (!document.getElementById(id).value.trim()) {
+      showAlert('step1Alert', label + ' is required.', 'err'); return;
+    }
+  }
+  // Age check
+  const dob = new Date(document.getElementById('dob').value);
+  const today = new Date();
+  let age = today.getFullYear() - dob.getFullYear();
+  if (today.getMonth() < dob.getMonth() || (today.getMonth()===dob.getMonth()&&today.getDate()<dob.getDate())) age--;
+  if (age < 18) { showAlert('step1Alert','Voter must be at least 18 years old.','err'); return; }
 
-if(!str) return ""
+  if (!otpVerified) { showAlert('step1Alert','Please verify the mobile number via OTP before proceeding.','err'); return; }
 
-return str
-.replace(/[<>'"\/]/g,"")
-.replace(/\s+/g," ")
-.trim()
+  const docs = [];
+  document.querySelectorAll('.doc-row').forEach(row => {
+    const t = row.querySelector('.doc-type').value;
+    const n = row.querySelector('.doc-number').value.replace(/\s/g,'');
+    if (n) docs.push({ type: t, number: sanitize(n) });
+  });
+  if (!docs.length) { showAlert('step1Alert','Add at least one identity document.','err'); return; }
 
+  const payload = {
+    name:         sanitize(document.getElementById('name').value),
+    dob:          document.getElementById('dob').value,
+    gender:       document.getElementById('gender').value,
+    parent_name:  sanitize(document.getElementById('parent_name').value),
+    occupation:   sanitize(document.getElementById('occupation').value),
+    phone:        document.getElementById('phone').value.trim(),
+    email:        sanitize(document.getElementById('email').value),
+    street:       sanitize(document.getElementById('street').value),
+    ward_number:  sanitize(document.getElementById('ward_number').value),
+    panchayat:    sanitize(document.getElementById('panchayat').value),
+    taluk:        sanitize(document.getElementById('taluk').value),
+    district:     sanitize(document.getElementById('district').value),
+    state:        document.getElementById('state').value,
+    pincode:      document.getElementById('pincode').value.trim(),
+    constituency: sanitize(document.getElementById('constituency').value),
+    officer_id:   session.id,
+    documents:    docs
+  };
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>Saving…';
+
+  try {
+    const res = await fetch('http://127.0.0.1:5000/api/register-voter', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) { showAlert('step1Alert', data.error || 'Registration failed.', 'err'); return; }
+    enrolledVoterId = data.voter_id;
+    goToStep2();
+  } catch { showAlert('step1Alert','Cannot reach server. Is Flask running?','err'); }
+  finally { btn.disabled=false; btn.innerHTML='Save &amp; Continue →'; }
 }
 
-document.getElementById("registerForm").addEventListener("submit", async function(e){
-
-e.preventDefault()
-
-if(!this.checkValidity()){
-this.reportValidity()
-return
+// ── Steps navigation ──────────────────────────────────────────────────────
+function goToStep2() {
+  document.getElementById('step1').classList.add('hidden');
+  document.getElementById('step2').classList.remove('hidden');
+  document.getElementById('si1').classList.replace('active','done');
+  document.getElementById('sn1').textContent = '✓';
+  document.getElementById('sdiv1').classList.add('done');
+  document.getElementById('si2').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* AGE VALIDATION */
-
-const dobValue=document.getElementById("dob").value
-const dob=new Date(dobValue)
-const today=new Date()
-
-let age=today.getFullYear()-dob.getFullYear()
-const month=today.getMonth()-dob.getMonth()
-
-if(month<0 || (month===0 && today.getDate()<dob.getDate())){
-age--
+function goToStep3(summaryParts) {
+  document.getElementById('step2').classList.add('hidden');
+  document.getElementById('step3').classList.remove('hidden');
+  document.getElementById('si2').classList.replace('active','done');
+  document.getElementById('sn2').textContent = '✓';
+  document.getElementById('sdiv2').classList.add('done');
+  document.getElementById('si3').classList.add('active');
+  document.getElementById('finalId').textContent = 'Voter ID #' + enrolledVoterId;
+  document.getElementById('bioSummary').textContent = summaryParts.join(' · ');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-if(age<18){
-
-document.getElementById("message").innerHTML=
-
-`<div class="alert alert-danger">
-<i class="bi bi-exclamation-octagon"></i>
-Voter must be at least 18 years old.
-</div>`
-
-return
-
-}
-
-const btn=document.getElementById("submitBtn")
-const original=btn.innerHTML
-
-btn.disabled=true
-btn.innerHTML=`<span class="spinner-border spinner-border-sm"></span> Processing...`
-
-/* COLLECT DOCUMENTS */
-
-const documents=[]
-
-document.querySelectorAll(".document-row").forEach(row=>{
-
-const type=row.querySelector(".document-type").value
-const number=row.querySelector(".document-number").value.replace(/\s/g,"")
-
-documents.push({
-type:type,
-number:sanitize(number)
-})
-
-})
-
-const payload={
-
-name:sanitize(document.getElementById("name").value),
-dob:dobValue,
-gender:document.getElementById("gender").value,
-phone:sanitize(document.getElementById("phone").value).replace(/\s/g,""),
-email:sanitize(document.getElementById("email").value),
-address:sanitize(document.getElementById("address").value),
-
-documents:documents
-
-}
-
-try{
-
-const controller=new AbortController()
-const timeout=setTimeout(()=>controller.abort(),10000)
-
-const response=await fetch("http://127.0.0.1:5000/api/register-voter",{
-
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify(payload),
-signal:controller.signal
-
-})
-
-clearTimeout(timeout)
-
-let result
-
-try{
-result=await response.json()
-}catch{
-result={message:"Unexpected server response"}
-}
-
-if(!response.ok){
-throw new Error(result.message || "Registration failed")
-}
-
-document.getElementById("message").innerHTML=
-
-`<div class="alert alert-success">
-<i class="bi bi-check-circle"></i> ${result.message}
-</div>`
-
-document.getElementById("registerForm").reset()
-
-}
-catch(error){
-
-let msg="Registration failed"
-
-if(error.name==="AbortError"){
-msg="Server timeout. Please try again."
-}else{
-msg=error.message
-}
-
-document.getElementById("message").innerHTML=
-
-`<div class="alert alert-danger">
-<i class="bi bi-exclamation-octagon"></i> ${msg}
-</div>`
-
-}
-finally{
-
-btn.disabled=false
-btn.innerHTML=original
-
-document.getElementById("message").scrollIntoView({behavior:"smooth"})
-
-}
-
-})
-
-
-let enrolledVoterId2 = null;
-function previewBio(input, slotId, statusId, prevId) {
+// ── Biometric preview ─────────────────────────────────────────────────────
+function previewBio(input, slotId, statusId, previewId) {
   if (!input.files[0]) return;
-  document.getElementById(slotId).style.borderColor='var(--green)';
-  document.getElementById(slotId).style.borderStyle='solid';
+  const slot = document.getElementById(slotId);
+  slot.classList.add('uploaded');
   document.getElementById(statusId).textContent = '✓ ' + input.files[0].name;
-  if (prevId) { const p=document.getElementById(prevId); p.src=URL.createObjectURL(input.files[0]); p.style.display='block'; }
+  if (previewId) {
+    const p = document.getElementById(previewId);
+    p.src = URL.createObjectURL(input.files[0]);
+    p.style.display = 'block';
+  }
 }
-async function submitBio2() {
-  const faceFile = document.getElementById('faceFile2').files[0];
-  if (!faceFile) { showBioAlert2('Face photo is required.','error'); return; }
-  const btn = document.getElementById('bioBtn2');
-  btn.disabled=true; btn.innerHTML='<span style="display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle"></span>Processing…';
+
+async function submitBio() {
+  const faceFile = document.getElementById('faceFile').files[0];
+  if (!faceFile) { showAlert('bioAlert','Face photo is required.','err'); return; }
+  const btn = document.getElementById('bioBtn');
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Uploading…';
   const fd = new FormData();
-  fd.append('voter_id', enrolledVoterId2);
+  fd.append('voter_id', enrolledVoterId);
   fd.append('face', faceFile);
-  const iris = document.getElementById('irisFile2').files[0];
-  const fp   = document.getElementById('fpFile2').files[0];
+  const iris = document.getElementById('irisFile').files[0];
+  const fp   = document.getElementById('fpFile').files[0];
   if (iris) fd.append('iris', iris);
   if (fp)   fd.append('fingerprint', fp);
   try {
-    const res = await fetch('http://127.0.0.1:5000/api/biometrics/upload', {method:'POST', body:fd});
+    const res = await fetch('http://127.0.0.1:5000/api/biometrics/upload', { method:'POST', body:fd });
     const data = await res.json();
-    if (!res.ok) { showBioAlert2(data.error||'Upload failed.','error'); return; }
+    if (!res.ok) { showAlert('bioAlert', data.error || 'Upload failed.', 'err'); return; }
     if (data.duplicate_detected && data.duplicate_info) {
       const di = data.duplicate_info;
       const dw = document.getElementById('dupWarn');
       dw.textContent = '⚠ Possible duplicate: ' + di.similarity_percent + ' face similarity with Voter #' + di.matched_voter_id + '. Fraud alert logged.';
-      dw.style.display='block';
-      setTimeout(()=>goComplete2(data),2000);
-    } else { goComplete2(data); }
-  } catch { showBioAlert2('Cannot connect to server.','error'); }
-  finally { btn.disabled=false; btn.innerHTML='Save Biometrics & Finish'; }
+      dw.style.display = 'block';
+    }
+    const parts = [data.face_saved?'✓ Face':'', data.iris_saved?'✓ Iris':'', data.fingerprint_saved?'✓ Fingerprint':'', data.duplicate_detected?'⚠ Duplicate flagged':''].filter(Boolean);
+    setTimeout(() => goToStep3(parts), data.duplicate_detected ? 2000 : 0);
+  } catch { showAlert('bioAlert','Cannot reach server.','err'); }
+  finally { btn.disabled=false; btn.innerHTML='Save Biometrics &amp; Finish'; }
 }
-function goComplete2(data) {
-  document.getElementById('bioStep').style.display='none';
-  document.getElementById('si2').classList.replace('active','done');
-  document.getElementById('sn2').textContent='✓';
-  document.getElementById('sdiv2').classList.add('done');
-  document.getElementById('si3').classList.add('active');
-  document.getElementById('completeStep').style.display='block';
-  document.getElementById('finalId').textContent='Voter ID: #'+enrolledVoterId2;
-  const parts=[data.face_saved?'✓ Face':'', data.iris_saved?'✓ Iris':'', data.fingerprint_saved?'✓ Fingerprint':'', data.duplicate_detected?'⚠ Duplicate flagged':''].filter(Boolean);
-  document.getElementById('bioSummary2').textContent=parts.join(' · ');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function skipBio2() {
-  document.getElementById('bioStep').style.display='none';
-  document.getElementById('completeStep').style.display='block';
-  document.getElementById('si2').classList.replace('active','done');
-  document.getElementById('sn2').textContent='✓';
-  document.getElementById('sdiv2').classList.add('done');
-  document.getElementById('si3').classList.add('active');
-  document.getElementById('finalId').textContent='Voter ID: #'+enrolledVoterId2;
-  document.getElementById('bioSummary2').textContent='⚠ Biometrics skipped — add via Pending Biometrics.';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function showBioAlert2(msg, type) {
-  const el=document.getElementById('bioAlert2');
-  el.textContent=msg;
-  el.style.display='block';
-  el.style.background=type==='error'?'rgba(220,38,38,.07)':'rgba(22,163,74,.07)';
-  el.style.border='1px solid '+(type==='error'?'rgba(220,38,38,.2)':'rgba(22,163,74,.2)');
-  el.style.color=type==='error'?'#b91c1c':'var(--green)';
-}
-function startOver2() { window.location.reload(); }
 
+function skipBio() {
+  goToStep3(['⚠ Biometrics skipped — add via Pending Biometrics']);
+}
+
+function startOver() { window.location.reload(); }
 </script>
-
 </body>
 </html>

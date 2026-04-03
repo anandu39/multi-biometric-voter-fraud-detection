@@ -1,9 +1,11 @@
-flask
-flask-cors
-python-dotenv
-opencv-python
-deepface
-mediapipe
-scikit-learn
-numpy
-pillow
+# EVRS Requirements
+# Render free tier has ~512MB RAM — DeepFace is heavy.
+# Phase 1 deploy: lightweight. Add deepface back once ML is stable.
+
+flask==3.0.3
+flask-cors==4.0.1
+python-dotenv==1.0.1
+requests==2.31.0       # For Fast2SMS API
+numpy==1.26.4
+pillow==10.3.0
+gunicorn==22.0.0       # Required for Render deployment

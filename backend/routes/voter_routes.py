@@ -17,7 +17,8 @@ def register_voter():
     if not data:
         return jsonify({"error": "Invalid request body"}), 400
 
-    required = ["name", "dob", "gender", "phone", "address"]
+    required = ["name", "dob", "gender", "phone", "street", "ward_number",
+                "panchayat", "district", "state", "pincode"]
     for field in required:
         if not data.get(field):
             return jsonify({"error": f"'{field}' is required"}), 400
