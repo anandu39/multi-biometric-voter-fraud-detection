@@ -6,421 +6,221 @@
 <title>EVRS — Election Voter Registration System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root {
-  --ink: #0a0e1a;
+  --cream: #f5f0e8;
+  --cream-dark: #ede5d8;
+  --beige: #e8dcc8;
+  --parchment: #faf6ee;
+  --ink: #1a1a2e;
   --ink-soft: #2d3448;
   --ink-muted: #6b7280;
-  --cream: #faf8f4;
-  --gold: #c9973a;
+  --gold: #b8860b;
+  --gold-bright: #d4a017;
   --gold-light: #f0d98a;
-  --gold-dark: #8a6520;
-  --blue: #1a3a6b;
-  --blue-mid: #2a5298;
-  --blue-light: #e8eef8;
-  --red: #b91c1c;
-  --green: #166534;
-  --green-light: #dcfce7;
-  --white: #ffffff;
-  --border: rgba(10,14,26,0.12);
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 20px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
-  --shadow-lg: 0 20px 60px rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.08);
+  --navy: #1a3a6b;
+  --navy-mid: #2a5298;
+  --navy-light: #dde8f8;
+  --red: #c0392b;
+  --green: #1a6b3a;
+  --white: #fff;
+  --border: rgba(26,26,46,0.1);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-md: 0 6px 24px rgba(0,0,0,0.10);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.13);
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--cream);
-  color: var(--ink);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ─── HEADER ───────────────────────────────────── */
+/* ── HEADER ── */
 header {
-  background: var(--ink);
-  padding: 0 clamp(1rem, 4vw, 3rem);
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  background: var(--parchment);
   border-bottom: 2px solid var(--gold);
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: var(--shadow-sm);
 }
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-em {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--gold), #7a5c00);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 18px;
 }
+.logo-text { display: flex; flex-direction: column; }
+.logo-abbr { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold); letter-spacing: .18em; line-height: 1; }
+.logo-full { font-size: 10px; color: var(--ink-muted); letter-spacing: .04em; }
 
-.logo-emblem {
-  width: 38px;
-  height: 38px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
+.header-right { display: flex; align-items: center; gap: 10px; }
+/* Logged-in state shown on home */
+.session-chip {
+  display: none;
+  align-items: center; gap: 8px;
+  background: var(--navy-light); border: 1px solid rgba(42,82,152,.2);
+  color: var(--navy); padding: 5px 14px; border-radius: 100px; font-size: .78rem; font-weight: 600;
 }
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
+.session-chip.show { display: flex; }
+.btn-hdr {
+  background: transparent; border: 1.5px solid var(--border); color: var(--ink-soft);
+  padding: 7px 16px; border-radius: 7px; font-family: 'DM Sans', sans-serif;
+  font-size: .82rem; font-weight: 600; cursor: pointer; text-decoration: none;
+  transition: all .2s;
 }
+.btn-hdr:hover { background: var(--beige); }
+.btn-hdr.primary { background: var(--navy); color: white; border-color: var(--navy); }
+.btn-hdr.primary:hover { background: var(--navy-mid); }
 
-.logo-abbr {
-  font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--gold);
-  letter-spacing: 0.15em;
-  line-height: 1;
-}
-
-.logo-full {
-  font-size: 10px;
-  color: rgba(255,255,255,0.45);
-  letter-spacing: 0.05em;
-  line-height: 1.4;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.btn-login-header {
-  background: transparent;
-  color: var(--gold);
-  border: 1px solid var(--gold);
-  padding: 7px 18px;
-  border-radius: 6px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s;
-  letter-spacing: 0.03em;
-}
-
-.btn-login-header:hover {
-  background: var(--gold);
-  color: var(--ink);
-}
-
-/* ─── HERO ──────────────────────────────────────── */
+/* ── HERO ── */
 .hero {
-  background: var(--ink);
-  padding: clamp(50px, 8vw, 90px) clamp(1rem, 5vw, 4rem);
-  position: relative;
-  overflow: hidden;
+  background: linear-gradient(155deg, #1a3a6b 0%, #0d2240 100%);
+  padding: clamp(60px,10vw,100px) clamp(1rem,5vw,4rem);
+  position: relative; overflow: hidden;
 }
-
 .hero::before {
   content: '';
-  position: absolute;
-  inset: 0;
-  background: 
-    radial-gradient(ellipse 60% 50% at 80% 50%, rgba(201,151,58,0.08) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(26,58,107,0.4) 0%, transparent 60%);
-  pointer-events: none;
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(184,134,11,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,134,11,.06) 1px, transparent 1px);
+  background-size: 44px 44px;
 }
-
-.hero-grid-bg {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(rgba(201,151,58,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(201,151,58,0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-}
-
-.hero-inner {
-  max-width: 900px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-  text-align: center;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(201,151,58,0.12);
-  border: 1px solid rgba(201,151,58,0.3);
-  color: var(--gold-light);
-  padding: 6px 16px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.1em;
-  margin-bottom: 28px;
-}
-
-.hero-badge::before {
+.hero::after {
   content: '';
-  width: 6px; height: 6px;
-  background: var(--gold);
-  border-radius: 50%;
-  animation: pulse 2s infinite;
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: var(--cream);
+  clip-path: ellipse(55% 100% at 50% 100%);
 }
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.8); }
+.hero-inner { max-width: 800px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(184,134,11,.18); border: 1px solid rgba(184,134,11,.35);
+  color: var(--gold-light); padding: 6px 18px; border-radius: 100px;
+  font-size: .72rem; font-family: 'DM Mono', monospace; letter-spacing: .1em; margin-bottom: 24px;
 }
-
+.hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--gold-bright); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.75)} }
 .hero h1 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
-  font-weight: 900;
-  color: var(--white);
-  line-height: 1.15;
-  margin-bottom: 20px;
-  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900; color: white; line-height: 1.15;
+  margin-bottom: 18px; letter-spacing: -.02em;
 }
+.hero h1 em { font-style: normal; color: var(--gold-light); }
+.hero p { font-size: clamp(.9rem,1.8vw,1.05rem); color: rgba(255,255,255,.55); max-width: 560px; margin: 0 auto 48px; line-height: 1.7; font-weight: 300; }
 
-.hero h1 em {
-  font-style: normal;
-  color: var(--gold);
+/* ── STATS STRIP ── */
+.stats-strip {
+  background: var(--parchment); border-top: 1px solid var(--beige); border-bottom: 1px solid var(--beige);
+  padding: 24px clamp(1rem,5vw,4rem);
 }
+.stats-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 24px; text-align: center; }
+.stat-val { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: var(--navy); }
+.stat-lbl { font-size: .72rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; margin-top: 2px; }
 
-.hero p {
-  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
-  color: rgba(255,255,255,0.55);
-  max-width: 600px;
-  margin: 0 auto 40px;
-  line-height: 1.7;
-  font-weight: 300;
-}
+/* ── PORTALS ── */
+.portals { max-width: 1100px; margin: 0 auto; padding: clamp(3rem,6vw,5rem) clamp(1rem,5vw,2rem); }
+.portals-header { text-align: center; margin-bottom: 48px; }
+.portals-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 700; margin-bottom: 10px; }
+.portals-header p { color: var(--ink-muted); font-size: .9rem; font-weight: 300; }
 
-/* ─── PORTAL CARDS ──────────────────────────────── */
-.portals {
-  padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 5vw, 4rem);
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.portals-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.portals-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 12px;
-}
-
-.portals-header p {
-  color: var(--ink-muted);
-  font-size: 0.95rem;
-  font-weight: 300;
-}
-
-.portal-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-}
+.portal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 24px; }
 
 .portal-card {
-  background: var(--white);
-  border-radius: 16px;
-  border: 1px solid var(--border);
+  background: var(--parchment);
+  border: 1.5px solid var(--beige);
+  border-radius: 18px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
+  transition: transform .25s, box-shadow .25s;
+  display: flex; flex-direction: column;
 }
+.portal-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
 
-.portal-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+.portal-card-top {
+  background: linear-gradient(135deg, var(--navy) 0%, #0d2240 100%);
+  padding: 28px 24px 22px;
+  border-bottom: 3px solid var(--gold);
+  position: relative; overflow: hidden;
 }
-
-.portal-card-header {
-  padding: 32px 28px 24px;
-  background: var(--ink);
-  position: relative;
-  overflow: hidden;
-}
-
-.portal-card-header::after {
+.portal-card-top::before {
   content: '';
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 4px;
-  background: var(--gold);
-}
-
-.portal-icon {
-  width: 52px; height: 52px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  margin-bottom: 16px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
-.portal-card-header h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: 8px;
-}
-
-.portal-card-header p {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.45);
-  font-weight: 300;
-  line-height: 1.6;
-}
-
-.portal-card-body {
-  padding: 24px 28px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.feature-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 0.875rem;
-  color: var(--ink-soft);
-}
-
-.feature-dot {
-  width: 6px; height: 6px;
-  background: var(--gold);
+  position: absolute; top: -20px; right: -20px;
+  width: 100px; height: 100px;
+  background: rgba(184,134,11,.08);
   border-radius: 50%;
-  margin-top: 6px;
-  flex-shrink: 0;
+}
+.portal-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold-light); font-size: 20px; margin-bottom: 14px;
+}
+.portal-card-top h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: white; margin-bottom: 6px; }
+.portal-card-top p { font-size: .82rem; color: rgba(255,255,255,.45); font-weight: 300; line-height: 1.5; }
+
+/* ACTIVE badge on booth card */
+.portal-card-top .active-badge {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(26,107,58,.2); border: 1px solid rgba(26,107,58,.4);
+  color: #6ee7a0; padding: 3px 10px; border-radius: 100px; font-size: .65rem; font-family: 'DM Mono', monospace;
 }
 
-.portal-card-footer {
-  padding: 20px 28px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  gap: 10px;
-}
+.portal-card-body { padding: 20px 24px; flex: 1; }
+.feature-item { display: flex; align-items: flex-start; gap: 10px; font-size: .845rem; color: var(--ink-soft); margin-bottom: 8px; }
+.feature-item i { color: var(--gold); width: 14px; margin-top: 3px; flex-shrink: 0; }
 
+.portal-card-footer { padding: 16px 24px; border-top: 1px solid var(--beige); display: flex; gap: 10px; }
 .btn-primary {
-  flex: 1;
-  background: var(--blue);
-  color: white;
-  border: none;
-  padding: 11px 16px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-  transition: all 0.2s;
-  letter-spacing: 0.02em;
+  flex: 1; background: var(--navy); color: white; border: none;
+  padding: 11px 16px; border-radius: 8px; font-family: 'DM Sans', sans-serif;
+  font-size: .875rem; font-weight: 600; cursor: pointer; text-decoration: none;
+  text-align: center; transition: background .2s;
 }
-
-.btn-primary:hover { background: var(--blue-mid); }
-
+.btn-primary:hover { background: var(--navy-mid); }
 .btn-secondary {
-  flex: 1;
-  background: transparent;
-  color: var(--ink-soft);
-  border: 1px solid var(--border);
-  padding: 11px 16px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-  transition: all 0.2s;
+  flex: 1; background: transparent; color: var(--ink-soft); border: 1.5px solid var(--beige);
+  padding: 11px 16px; border-radius: 8px; font-family: 'DM Sans', sans-serif;
+  font-size: .875rem; font-weight: 500; cursor: pointer; text-decoration: none;
+  text-align: center; transition: all .2s;
 }
+.btn-secondary:hover { background: var(--beige); border-color: var(--gold); }
 
-.btn-secondary:hover { background: var(--blue-light); border-color: var(--blue-mid); color: var(--blue); }
-
-/* ─── STATS STRIP ───────────────────────────────── */
-.stats-strip {
-  background: var(--white);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 28px clamp(1rem, 5vw, 4rem);
+/* Session-aware dashboard strip */
+.session-dashboard {
+  display: none;
+  background: var(--navy-light); border: 1.5px solid rgba(42,82,152,.2); border-radius: 14px;
+  padding: 20px 24px; margin: 0 auto 32px; max-width: 1100px;
+  margin-left: clamp(1rem,5vw,2rem); margin-right: clamp(1rem,5vw,2rem);
 }
-
-.stats-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 24px;
-  text-align: center;
+.session-dashboard.show { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.sd-info { flex: 1; }
+.sd-greeting { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+.sd-role { font-size: .78rem; color: var(--ink-muted); margin-top: 2px; }
+.sd-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.sd-btn {
+  background: var(--navy); color: white; border: none; padding: 9px 18px;
+  border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: background .2s;
 }
+.sd-btn:hover { background: var(--navy-mid); }
+.sd-btn.outline { background: transparent; border: 1.5px solid rgba(42,82,152,.3); color: var(--navy); }
+.sd-btn.outline:hover { background: var(--navy-light); }
 
-.stat-item {}
-
-.stat-value {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--blue);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-
-.stat-label {
-  font-size: 0.78rem;
-  color: var(--ink-muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-/* ─── FOOTER ────────────────────────────────────── */
+/* ── FOOTER ── */
 footer {
-  background: var(--ink);
-  color: rgba(255,255,255,0.4);
-  text-align: center;
-  padding: 24px clamp(1rem, 4vw, 3rem);
-  font-size: 0.8rem;
-  font-weight: 300;
-  letter-spacing: 0.04em;
-  border-top: 2px solid var(--gold);
+  background: var(--ink); color: rgba(255,255,255,.4);
+  text-align: center; padding: 24px;
+  font-size: .78rem; font-weight: 300; border-top: 2px solid var(--gold);
 }
 
-/* ─── RESPONSIVE ─────────────────────────────────  */
 @media (max-width: 600px) {
-  .logo-full { display: none; }
-  .hero h1 { font-size: 1.9rem; }
   .portal-grid { grid-template-columns: 1fr; }
+  .stats-inner { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -428,44 +228,45 @@ footer {
 
 <header>
   <a href="index.html" class="logo">
-    <div class="logo-emblem">🗳</div>
+    <div class="logo-em"><i class="fa-solid fa-landmark-dome"></i></div>
     <div class="logo-text">
       <span class="logo-abbr">EVRS</span>
       <span class="logo-full">Election Voter Registration System</span>
     </div>
   </a>
   <div class="header-right">
-    <a href="login.html" class="btn-login-header">Officer Login</a>
+    <div class="session-chip" id="sessionChip">
+      <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
+      <span id="chipName">—</span>
+    </div>
+    <a href="login.html" class="btn-hdr" id="hdrLogin">Officer Login</a>
+    <a href="officer-register.html" class="btn-hdr" id="hdrRegister">Register</a>
   </div>
 </header>
 
 <section class="hero">
-  <div class="hero-grid-bg"></div>
   <div class="hero-inner">
-    <div class="hero-badge">GOVERNMENT PORTAL — SECURE ACCESS ONLY</div>
+    <div class="hero-badge">GOVERNMENT SECURE PORTAL</div>
     <h1>Multi-Biometric<br><em>Voter Identity</em> System</h1>
-    <p>A secure digital platform for election officers to register citizens and prevent duplicate or fraudulent voter identities using biometric verification technologies.</p>
+    <p>A secure digital platform for election officers to register citizens and detect duplicate or fraudulent voter identities using biometric verification.</p>
   </div>
 </section>
 
+<!-- Session-aware dashboard strip -->
+<div class="session-dashboard" id="sessionDashboard">
+  <div class="sd-info">
+    <div class="sd-greeting" id="sdGreeting">Welcome back</div>
+    <div class="sd-role" id="sdRole">—</div>
+  </div>
+  <div class="sd-actions" id="sdActions"></div>
+</div>
+
 <div class="stats-strip">
   <div class="stats-inner">
-    <div class="stat-item">
-      <div class="stat-value" id="statVoters">—</div>
-      <div class="stat-label">Voters Enrolled</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value" id="statOfficers">—</div>
-      <div class="stat-label">Officers Active</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">3</div>
-      <div class="stat-label">Biometric Layers</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-value">AES-256</div>
-      <div class="stat-label">Encryption</div>
-    </div>
+    <div><div class="stat-val" id="statVoters">—</div><div class="stat-lbl">Voters Enrolled</div></div>
+    <div><div class="stat-val" id="statOfficers">—</div><div class="stat-lbl">Officers Active</div></div>
+    <div><div class="stat-val">3</div><div class="stat-lbl">Biometric Layers</div></div>
+    <div><div class="stat-val" id="statFraud">—</div><div class="stat-lbl">Fraud Alerts</div></div>
   </div>
 </div>
 
@@ -479,17 +280,17 @@ footer {
 
     <!-- OFFICER PORTAL -->
     <div class="portal-card">
-      <div class="portal-card-header">
-        <div class="portal-icon">👮</div>
+      <div class="portal-card-top">
+        <div class="portal-icon"><i class="fa-solid fa-user-shield"></i></div>
         <h3>Election Officer Portal</h3>
-        <p>For registration officers and poll booth duty personnel authorised by the Election Commission.</p>
+        <p>For registration officers authorised by the Election Commission to enrol citizens.</p>
       </div>
       <div class="portal-card-body">
-        <div class="feature-item"><div class="feature-dot"></div><span>Self-registration with employment ID</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Mobile OTP verification</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Secure 8-hour session</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Access voter registration module</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Daily ward-wise activity report</span></div>
+        <div class="feature-item"><i class="fa-solid fa-id-badge"></i><span>Self-registration with employment ID</span></div>
+        <div class="feature-item"><i class="fa-solid fa-mobile-screen"></i><span>Mobile OTP verification</span></div>
+        <div class="feature-item"><i class="fa-solid fa-clock"></i><span>Secure 8-hour session</span></div>
+        <div class="feature-item"><i class="fa-solid fa-user-plus"></i><span>Voter registration &amp; biometrics</span></div>
+        <div class="feature-item"><i class="fa-solid fa-chart-bar"></i><span>Daily ward-wise activity report</span></div>
       </div>
       <div class="portal-card-footer">
         <a href="login.html" class="btn-primary">Officer Login</a>
@@ -499,17 +300,17 @@ footer {
 
     <!-- VOTER REGISTRATION -->
     <div class="portal-card">
-      <div class="portal-card-header">
-        <div class="portal-icon">🪪</div>
+      <div class="portal-card-top">
+        <div class="portal-icon"><i class="fa-solid fa-id-card"></i></div>
         <h3>Voter Registration</h3>
-        <p>Register citizen voter identity with demographic details, documents, and biometric data capture.</p>
+        <p>Register citizen voter identity with demographic details, documents, and biometric capture.</p>
       </div>
       <div class="portal-card-body">
-        <div class="feature-item"><div class="feature-dot"></div><span>Full demographic data collection</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Multiple government ID support</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Ward, panchayat & district mapping</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Mobile OTP for citizen verification</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Biometric capture placeholder</span></div>
+        <div class="feature-item"><i class="fa-solid fa-file-lines"></i><span>Full demographic data collection</span></div>
+        <div class="feature-item"><i class="fa-solid fa-passport"></i><span>Multiple government ID support</span></div>
+        <div class="feature-item"><i class="fa-solid fa-map-pin"></i><span>Ward, panchayat &amp; district mapping</span></div>
+        <div class="feature-item"><i class="fa-solid fa-camera"></i><span>Live camera or file photo upload</span></div>
+        <div class="feature-item"><i class="fa-solid fa-fingerprint"></i><span>Biometric duplicate detection</span></div>
       </div>
       <div class="portal-card-footer">
         <a href="register.html" class="btn-primary">Register Voter</a>
@@ -517,22 +318,24 @@ footer {
       </div>
     </div>
 
-    <!-- VERIFICATION PORTAL -->
+    <!-- BOOTH VERIFICATION — now fully active -->
     <div class="portal-card">
-      <div class="portal-card-header" style="opacity:0.7;">
-        <div class="portal-icon">🛡️</div>
+      <div class="portal-card-top">
+        <div class="portal-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <span class="active-badge"><i class="fa-solid fa-circle" style="font-size:6px"></i> Active</span>
         <h3>Poll Booth Verification</h3>
-        <p>Verify voter identity at polling stations using multi-biometric authentication against the database.</p>
+        <p>Verify voter identity at polling stations using face recognition against the database.</p>
       </div>
       <div class="portal-card-body">
-        <div class="feature-item"><div class="feature-dot"></div><span>Face recognition matching</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Iris scan verification</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Fingerprint authentication</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Fraud alert generation</span></div>
-        <div class="feature-item"><div class="feature-dot"></div><span>Real-time match scoring</span></div>
+        <div class="feature-item"><i class="fa-solid fa-face-viewfinder"></i><span>Live face capture &amp; matching</span></div>
+        <div class="feature-item"><i class="fa-solid fa-magnifying-glass"></i><span>Voter lookup by name or ID</span></div>
+        <div class="feature-item"><i class="fa-solid fa-map"></i><span>Multi-ward booth support</span></div>
+        <div class="feature-item"><i class="fa-solid fa-triangle-exclamation"></i><span>Real-time fraud alert generation</span></div>
+        <div class="feature-item"><i class="fa-solid fa-check-double"></i><span>Double-vote prevention</span></div>
       </div>
       <div class="portal-card-footer">
         <a href="booth-login.html" class="btn-primary">Open Booth Verification</a>
+        <a href="fraud-alerts.html" class="btn-secondary">Fraud Alerts</a>
       </div>
     </div>
 
@@ -541,18 +344,53 @@ footer {
 
 <footer>
   <p>Election Voter Registration System &nbsp;·&nbsp; Government of India &nbsp;·&nbsp; Secure Multi-Biometric Platform</p>
-  <p style="margin-top:6px;font-size:0.72rem;">Authorised access only. Unauthorised use is a punishable offence under the IT Act, 2000.</p>
+  <p style="margin-top:6px;font-size:.7rem;">Authorised access only. Unauthorised use is a punishable offence under the IT Act, 2000.</p>
 </footer>
 
 <script>
+// ── Session-aware home page ────────────────────────────────────────────────
+const session = JSON.parse(sessionStorage.getItem('evrs_officer') || 'null');
+const boothSession = JSON.parse(sessionStorage.getItem('evrs_booth') || 'null');
+
+if (session && session.expires > Date.now()) {
+  document.getElementById('sessionChip').classList.add('show');
+  document.getElementById('chipName').textContent = session.name;
+  document.getElementById('hdrLogin').style.display = 'none';
+  document.getElementById('hdrRegister').style.display = 'none';
+
+  const dash = document.getElementById('sessionDashboard');
+  dash.classList.add('show');
+  document.getElementById('sdGreeting').textContent = 'Welcome back, ' + session.name;
+
+  const roleMap = { registration_officer: 'Registration Officer', booth_officer: 'Booth Officer', supervisor: 'Supervisor' };
+  document.getElementById('sdRole').textContent = roleMap[session.role] || session.role;
+
+  const actions = document.getElementById('sdActions');
+  if (session.role === 'registration_officer' || session.role === 'supervisor') {
+    actions.innerHTML += `<a href="register.html" class="sd-btn"><i class="fa-solid fa-user-plus"></i> Register Voter</a>`;
+    actions.innerHTML += `<a href="voters.html" class="sd-btn outline"><i class="fa-solid fa-list"></i> Voter Registry</a>`;
+    actions.innerHTML += `<a href="biometrics-pending.html" class="sd-btn outline"><i class="fa-solid fa-camera"></i> Pending Biometrics</a>`;
+  }
+  if (session.role === 'booth_officer' || session.role === 'supervisor') {
+    actions.innerHTML += `<a href="booth-login.html" class="sd-btn"><i class="fa-solid fa-shield-halved"></i> Booth Verification</a>`;
+  }
+  actions.innerHTML += `<button class="sd-btn outline" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>`;
+}
+
+function logout() {
+  sessionStorage.removeItem('evrs_officer');
+  window.location.href = 'logout-summary.html';
+}
+
+// ── Stats ──────────────────────────────────────────────────────────────────
 async function loadStats() {
   try {
     const r = await fetch('http://127.0.0.1:5000/api/stats');
     if (!r.ok) return;
     const d = await r.json();
-    if (d.total_voters !== undefined) document.getElementById('statVoters').textContent = d.total_voters.toLocaleString('en-IN');
+    if (d.total_voters !== undefined)  document.getElementById('statVoters').textContent  = d.total_voters.toLocaleString('en-IN');
     if (d.total_officers !== undefined) document.getElementById('statOfficers').textContent = d.total_officers.toLocaleString('en-IN');
-    if (d.fraud_alerts !== undefined && document.getElementById('statFraud')) document.getElementById('statFraud').textContent = d.fraud_alerts.toLocaleString('en-IN');
+    if (d.fraud_alerts !== undefined)  document.getElementById('statFraud').textContent   = d.fraud_alerts.toLocaleString('en-IN');
   } catch {}
 }
 loadStats();

@@ -23,8 +23,8 @@ otp_bp = Blueprint("otp_bp", __name__)
 
 OTP_EXPIRY_SECONDS = 300          # 5 minutes
 FAST2SMS_KEY = os.getenv("FAST2SMS_KEY", "")   # Set in .env or Render environment variables
-DEV_MODE = not bool(FAST2SMS_KEY)               # Auto-detected: dev if no key
-
+# DEV_MODE = not bool(FAST2SMS_KEY)               # Auto-detected: dev if no key
+DEV_MODE = True
 
 def generate_otp() -> str:
     return str(random.randint(100000, 999999))
