@@ -6,157 +6,120 @@
 <title>Officer Registration — EVRS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root {
-  --ink: #0a0e1a;
-  --ink-soft: #2d3448;
-  --ink-muted: #6b7280;
-  --cream: #faf8f4;
-  --gold: #c9973a;
-  --gold-light: #f0d98a;
-  --blue: #1a3a6b;
-  --blue-mid: #2a5298;
-  --blue-light: #e8eef8;
-  --red: #dc2626;
-  --green: #16a34a;
-  --white: #ffffff;
-  --border: rgba(10,14,26,0.12);
+  --cream:#f5f0e8;--cream-dark:#ede5d8;--beige:#e8dcc8;--parchment:#faf6ee;
+  --ink:#1a1a2e;--ink-soft:#2d3448;--ink-muted:#6b7280;
+  --gold:#b8860b;--gold-bright:#d4a017;--gold-dark:#7a5c00;
+  --navy:#1a3a6b;--navy-mid:#2a5298;--navy-light:#dde8f8;
+  --red:#c0392b;--green:#1a6b3a;--green-light:#d4f1df;
+  --white:#fff;--border:rgba(26,26,46,.12);
+  --shadow-sm:0 1px 4px rgba(0,0,0,.06);--shadow-md:0 6px 24px rgba(0,0,0,.1);
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--ink);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-}
-.bg-grid {
-  position: fixed; inset: 0;
-  background-image: linear-gradient(rgba(201,151,58,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(201,151,58,0.04) 1px, transparent 1px);
-  background-size: 44px 44px;
-  pointer-events: none;
-}
-.bg-glow { position: fixed; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(201,151,58,0.07) 0%, transparent 70%); pointer-events: none; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
 
-.page { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; position: relative; z-index: 1; }
-.reg-wrap { width: 100%; max-width: 560px; padding-bottom: 3rem; }
-.back-link { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.4); font-size: 0.82rem; text-decoration: none; margin-bottom: 28px; transition: color 0.2s; letter-spacing: 0.04em; }
-.back-link:hover { color: var(--gold); }
+/* HEADER */
+header{background:var(--parchment);border-bottom:2px solid var(--gold);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2.5rem);box-shadow:var(--shadow-sm);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-em{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;}
+.logo-abbr{font-family:'DM Mono',monospace;font-size:13px;color:var(--gold);letter-spacing:.15em;}
+.back-link{display:inline-flex;align-items:center;gap:6px;color:var(--ink-muted);font-size:.82rem;text-decoration:none;transition:color .2s;}
+.back-link:hover{color:var(--navy);}
 
-.reg-header { margin-bottom: 32px; }
-.logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-.logo-emblem { width: 42px; height: 42px; background: linear-gradient(135deg, var(--gold), #8a6520); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-.logo-abbr { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--gold); letter-spacing: 0.15em; }
-.reg-header h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
-.reg-header p { font-size: 0.875rem; color: rgba(255,255,255,0.4); font-weight: 300; line-height: 1.6; }
+/* PAGE */
+.page{flex:1;padding:clamp(2rem,5vw,3rem) 1rem;}
+.reg-wrap{width:100%;max-width:580px;margin:0 auto;}
 
-.card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 28px; backdrop-filter: blur(8px); margin-bottom: 16px; }
-.section-label { font-size: 0.72rem; font-weight: 700; color: rgba(201,151,58,0.8); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid rgba(201,151,58,0.15); }
+.reg-header{margin-bottom:28px;}
+.role-badge{display:inline-flex;align-items:center;gap:7px;background:var(--navy-light);border:1px solid rgba(42,82,152,.2);color:var(--navy);padding:5px 14px;border-radius:100px;font-size:.72rem;font-family:'DM Mono',monospace;letter-spacing:.06em;margin-bottom:14px;}
+.reg-header h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.reg-header p{font-size:.875rem;color:var(--ink-muted);font-weight:300;line-height:1.6;}
 
-.form-grid { display: grid; gap: 18px; }
-.form-grid.cols-2 { grid-template-columns: 1fr 1fr; }
-.form-group { display: flex; flex-direction: column; gap: 7px; }
-label { font-size: 0.76rem; font-weight: 600; color: rgba(255,255,255,0.45); letter-spacing: 0.07em; text-transform: uppercase; }
-.required-mark { color: #f87171; margin-left: 2px; }
+/* CARD */
+.card{background:var(--parchment);border:1.5px solid var(--beige);border-radius:16px;padding:26px 28px;box-shadow:var(--shadow-sm);margin-bottom:16px;}
+.section-label{font-size:.68rem;font-weight:700;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--beige);}
 
-.input-wrap { position: relative; }
-.input-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 15px; pointer-events: none; opacity: 0.4; }
-input, select, textarea {
-  width: 100%;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: var(--white);
-  padding: 11px 13px 11px 40px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.88rem;
-  outline: none;
-  transition: border-color 0.2s, background 0.2s;
-}
-select { padding-left: 13px; }
-input:focus, select:focus, textarea:focus { border-color: var(--gold); background: rgba(201,151,58,0.05); }
-input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.18); }
-select option { background: #1a1f2e; color: var(--white); }
-.input-hint { font-size: 0.72rem; color: rgba(255,255,255,0.22); }
+/* FORM */
+.form-grid{display:grid;gap:16px;}
+.form-grid.cols-2{grid-template-columns:1fr 1fr;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+label{font-size:.73rem;font-weight:700;color:var(--ink-soft);letter-spacing:.07em;text-transform:uppercase;}
+.req-mark{color:var(--red);margin-left:2px;}
 
-/* OTP AREA */
-.otp-row { display: flex; gap: 10px; align-items: flex-end; }
-.otp-row .form-group { flex: 1; }
-.btn-otp {
-  background: transparent;
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  padding: 11px 16px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s;
-  height: 42px;
-  align-self: flex-end;
-}
-.btn-otp:hover { background: rgba(201,151,58,0.1); }
-.btn-otp:disabled { opacity: 0.4; cursor: not-allowed; }
-.otp-status { font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-top: 5px; }
-.otp-status.sent { color: #86efac; }
-.otp-status.verified { color: #86efac; font-weight: 600; }
+.input-wrap{position:relative;}
+.input-wrap i{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--ink-muted);font-size:13px;pointer-events:none;}
+input,select,textarea{
+  width:100%;background:white;border:1.5px solid var(--beige);color:var(--ink);
+  padding:11px 13px 11px 38px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.875rem;
+  outline:none;transition:border-color .2s,box-shadow .2s;}
+select{padding-left:13px;}
+textarea{padding-left:13px;resize:vertical;min-height:80px;}
+input:focus,select:focus,textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(42,82,152,.08);}
+input::placeholder,textarea::placeholder{color:var(--ink-muted);}
+select option{background:white;color:var(--ink);}
+.input-hint{font-size:.72rem;color:var(--ink-muted);margin-top:3px;}
+
+/* OTP */
+.otp-send-row{display:flex;gap:10px;align-items:flex-end;}
+.otp-send-row .form-group{flex:1;}
+.btn-otp{background:var(--navy);color:white;border:none;padding:11px 16px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap;height:44px;transition:background .2s;display:flex;align-items:center;gap:6px;}
+.btn-otp:hover{background:var(--navy-mid);}
+.btn-otp:disabled{opacity:.5;cursor:not-allowed;}
+.otp-verify-section{display:none;margin-top:10px;}
+.otp-verify-section.show{display:block;}
+.otp-verify-row{display:flex;gap:8px;}
+.otp-verify-row input{flex:1;font-family:'DM Mono',monospace;letter-spacing:.15em;font-size:1rem;}
+.btn-verify{background:var(--green);color:white;border:none;padding:11px 18px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;}
+.otp-status{font-size:.78rem;margin-top:6px;display:none;align-items:center;gap:6px;}
+.otp-status.show{display:flex;}
+.otp-status.ok{color:var(--green);}
+.otp-status.err{color:var(--red);}
 
 /* PASSWORD STRENGTH */
-.pw-strength { height: 3px; border-radius: 2px; margin-top: 6px; background: rgba(255,255,255,0.08); overflow: hidden; }
-.pw-strength-bar { height: 100%; width: 0; transition: width 0.3s, background 0.3s; border-radius: 2px; }
-.pw-hint { font-size: 0.72rem; color: rgba(255,255,255,0.22); margin-top: 4px; }
+.pw-strength-bar-wrap{height:4px;background:var(--cream-dark);border-radius:2px;margin-top:6px;overflow:hidden;}
+.pw-strength-bar{height:100%;width:0;border-radius:2px;transition:width .3s,background .3s;}
 
-.btn-submit {
-  width: 100%;
-  background: linear-gradient(135deg, var(--gold), #a87828);
-  color: var(--ink);
-  border: none;
-  padding: 14px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  letter-spacing: 0.05em;
-  transition: opacity 0.2s, transform 0.2s;
-  margin-top: 4px;
-}
-.btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
-.btn-submit:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
-.alert { padding: 12px 16px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; display: none; }
-.alert.error { background: rgba(220,38,38,0.12); border: 1px solid rgba(220,38,38,0.3); color: #fca5a5; }
-.alert.success { background: rgba(22,163,74,0.12); border: 1px solid rgba(22,163,74,0.3); color: #86efac; }
-.alert.show { display: block; }
-.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(10,14,26,0.3); border-top-color: var(--ink); border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; vertical-align: middle; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.login-prompt { text-align: center; font-size: 0.82rem; color: rgba(255,255,255,0.3); margin-top: 12px; }
-.login-prompt a { color: var(--gold); text-decoration: none; }
-footer { text-align: center; padding: 16px; color: rgba(255,255,255,0.2); font-size: 0.75rem; position: relative; z-index: 1; letter-spacing: 0.04em; }
+/* SUBMIT */
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:white;border:none;padding:14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:opacity .2s,transform .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;}
+.btn-submit:hover{opacity:.9;transform:translateY(-1px);}
+.btn-submit:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+.alert{padding:12px 16px;border-radius:9px;font-size:.85rem;margin-bottom:16px;display:none;align-items:center;gap:9px;}
+.alert.error{background:#fef2f2;border:1.5px solid rgba(192,57,43,.2);color:var(--red);}
+.alert.success{background:#f0fdf4;border:1.5px solid rgba(26,107,58,.2);color:var(--green);}
+.alert.show{display:flex;}
+.login-prompt{text-align:center;font-size:.82rem;color:var(--ink-muted);margin-top:12px;}
+.login-prompt a{color:var(--navy);text-decoration:none;font-weight:600;}
+.login-prompt a:hover{text-decoration:underline;}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-@media (max-width: 540px) {
-  .form-grid.cols-2 { grid-template-columns: 1fr; }
-  .card { padding: 20px 16px; }
+footer{text-align:center;padding:16px;color:var(--ink-muted);font-size:.75rem;border-top:1px solid var(--beige);}
+
+@media(max-width:540px){
+  .form-grid.cols-2{grid-template-columns:1fr;}
+  .card{padding:20px 16px;}
 }
 </style>
 </head>
 <body>
-<div class="bg-grid"></div>
-<div class="bg-glow"></div>
+
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-em"><i class="fa-solid fa-landmark-dome"></i></div>
+    <span class="logo-abbr">EVRS</span>
+  </a>
+  <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+</header>
 
 <div class="page">
   <div class="reg-wrap">
-    <a href="index.html" class="back-link">← Back to Home</a>
 
     <div class="reg-header">
-      <div class="logo-row">
-        <div class="logo-emblem">🗳</div>
-        <span class="logo-abbr">EVRS</span>
-      </div>
-      <h1>Officer Registration</h1>
-      <p>Register with your Election Commission employment details. Your mobile number will be verified via OTP.</p>
+      <div class="role-badge"><i class="fa-solid fa-user-shield"></i> OFFICER REGISTRATION</div>
+      <h1>Create Officer Account</h1>
+      <p>Register with your Election Commission employment details. Your mobile number will be verified via OTP before your account is created.</p>
     </div>
 
     <div id="alertBox" class="alert"></div>
@@ -166,27 +129,27 @@ footer { text-align: center; padding: 16px; color: rgba(255,255,255,0.2); font-s
       <div class="section-label">Personal Information</div>
       <div class="form-grid">
         <div class="form-group">
-          <label>Full Name <span class="required-mark">*</span></label>
+          <label>Full Name <span class="req-mark">*</span></label>
           <div class="input-wrap">
-            <span class="input-icon">👤</span>
-            <input type="text" id="name" placeholder="As per service record" maxlength="100">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="name" placeholder="Enter your full name as per service record" maxlength="100">
           </div>
         </div>
         <div class="form-grid cols-2">
           <div class="form-group">
-            <label>Designation <span class="required-mark">*</span></label>
+            <label>Designation <span class="req-mark">*</span></label>
             <select id="role">
-              <option value="">Select role</option>
+              <option value="">Select your role</option>
               <option value="registration_officer">Registration Officer</option>
               <option value="booth_officer">Poll Booth Officer</option>
               <option value="supervisor">Supervisor</option>
             </select>
           </div>
           <div class="form-group">
-            <label>District <span class="required-mark">*</span></label>
+            <label>District <span class="req-mark">*</span></label>
             <div class="input-wrap">
-              <span class="input-icon">📍</span>
-              <input type="text" id="district" placeholder="District name">
+              <i class="fa-solid fa-map-pin"></i>
+              <input type="text" id="district" placeholder="Enter your district name">
             </div>
           </div>
         </div>
@@ -195,42 +158,38 @@ footer { text-align: center; padding: 16px; color: rgba(255,255,255,0.2); font-s
 
     <!-- EMPLOYMENT DETAILS -->
     <div class="card">
-      <div class="section-label">Employment & Identity</div>
+      <div class="section-label">Employment &amp; Identity</div>
       <div class="form-grid">
         <div class="form-group">
-          <label>Employee ID <span class="required-mark">*</span></label>
+          <label>Employee ID <span class="req-mark">*</span></label>
           <div class="input-wrap">
-            <span class="input-icon">🪪</span>
-            <input type="text" id="emp_id" placeholder="e.g. EMP-2024-001234" maxlength="30">
+            <i class="fa-solid fa-id-badge"></i>
+            <input type="text" id="emp_id" placeholder="Enter your employee ID (e.g. EMP-00123)" maxlength="30">
           </div>
-          <span class="input-hint">Issued by the Election Commission of India</span>
+          <div class="input-hint">As issued by Election Commission of India</div>
         </div>
-        <!-- MOBILE + OTP -->
+
+        <!-- OTP MOBILE -->
         <div class="form-group">
-          <label>Mobile Number <span class="required-mark">*</span></label>
-          <div class="otp-row">
-            <div class="form-group" style="gap:0">
+          <label>Mobile Number <span class="req-mark">*</span></label>
+          <div class="otp-send-row">
+            <div class="form-group" style="margin:0">
               <div class="input-wrap">
-                <span class="input-icon">📱</span>
-                <input type="tel" id="mobile" placeholder="98765 43210" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
+                <i class="fa-solid fa-mobile-screen"></i>
+                <input type="tel" id="mobile" placeholder="Enter your 10-digit mobile number" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)">
               </div>
             </div>
-            <button class="btn-otp" id="sendOtpBtn" onclick="sendOtp()">Send OTP</button>
+            <button type="button" class="btn-otp" id="sendOtpBtn" onclick="sendOtp()">
+              <i class="fa-solid fa-paper-plane"></i> Send OTP
+            </button>
           </div>
-          <span class="otp-status" id="otpStatus"></span>
-        </div>
-        <div class="form-group" id="otpInputGroup" style="display:none">
-          <label>Enter OTP <span class="required-mark">*</span></label>
-          <div class="otp-row">
-            <div class="form-group" style="gap:0; flex:1">
-              <div class="input-wrap">
-                <span class="input-icon">🔑</span>
-                <input type="text" id="otpInput" placeholder="6-digit OTP" maxlength="6" oninput="this.value=this.value.replace(/\D/g,'')">
-              </div>
+          <div class="otp-verify-section" id="otpVerifySection">
+            <div class="otp-verify-row">
+              <input type="text" id="otpInput" placeholder="Enter the 6-digit OTP" maxlength="6" oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)">
+              <button type="button" class="btn-verify" onclick="verifyOtp()"><i class="fa-solid fa-check"></i> Verify</button>
             </div>
-            <button class="btn-otp" onclick="verifyOtp()">Verify</button>
           </div>
-          <span class="otp-status" id="otpVerifyStatus"></span>
+          <div class="otp-status" id="otpStatus"></div>
         </div>
       </div>
     </div>
@@ -238,161 +197,165 @@ footer { text-align: center; padding: 16px; color: rgba(255,255,255,0.2); font-s
     <!-- PASSWORD -->
     <div class="card">
       <div class="section-label">Set Password</div>
-      <div class="form-grid cols-2">
+      <div class="form-grid">
         <div class="form-group">
-          <label>Password <span class="required-mark">*</span></label>
+          <label>Password <span class="req-mark">*</span></label>
           <div class="input-wrap">
-            <span class="input-icon">🔒</span>
-            <input type="password" id="password" placeholder="Min. 8 characters" oninput="checkStrength(this.value)">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" placeholder="Create a strong password (minimum 8 characters)" maxlength="64" oninput="checkStrength(this.value)">
           </div>
-          <div class="pw-strength"><div class="pw-strength-bar" id="pwBar"></div></div>
-          <span class="pw-hint" id="pwHint"></span>
+          <div class="pw-strength-bar-wrap"><div class="pw-strength-bar" id="pwBar"></div></div>
+          <div class="input-hint" id="pwHint">Use letters, numbers, and a special character</div>
         </div>
         <div class="form-group">
-          <label>Confirm Password <span class="required-mark">*</span></label>
+          <label>Confirm Password <span class="req-mark">*</span></label>
           <div class="input-wrap">
-            <span class="input-icon">🔒</span>
-            <input type="password" id="confirmPassword" placeholder="Repeat password">
+            <i class="fa-solid fa-lock-open"></i>
+            <input type="password" id="confirmPassword" placeholder="Re-enter your password" maxlength="64">
           </div>
         </div>
       </div>
     </div>
 
-    <button class="btn-submit" id="registerBtn" onclick="handleRegister()">
-      Register Officer Account
+    <button class="btn-submit" id="submitBtn" onclick="submitRegistration()">
+      <i class="fa-solid fa-user-plus"></i> Create Officer Account
     </button>
-    <div class="login-prompt">Already have an account? <a href="login.html">Sign in here →</a></div>
+
+    <div class="login-prompt">
+      Already registered? <a href="login.html">Sign in to your account →</a>
+    </div>
+
   </div>
 </div>
 
-<footer>EVRS &nbsp;·&nbsp; Authorised Personnel Only</footer>
+<footer>EVRS &nbsp;·&nbsp; Authorised Personnel Only &nbsp;·&nbsp; Government of India</footer>
 
 <script>
 let otpVerified = false;
-let currentOtp = null;
 
 function showAlert(msg, type) {
-  const b = document.getElementById('alertBox');
-  b.textContent = msg;
-  b.className = `alert ${type} show`;
-  b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  const box = document.getElementById('alertBox');
+  box.innerHTML = `<i class="fa-solid fa-${type==='error'?'circle-exclamation':'circle-check'}"></i> ${msg}`;
+  box.className = `alert ${type} show`;
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+// ── Password strength ─────────────────────────────────────────────────────
 function checkStrength(pw) {
   const bar = document.getElementById('pwBar');
   const hint = document.getElementById('pwHint');
   let score = 0;
   if (pw.length >= 8) score++;
+  if (pw.length >= 12) score++;
   if (/[A-Z]/.test(pw)) score++;
   if (/[0-9]/.test(pw)) score++;
   if (/[^A-Za-z0-9]/.test(pw)) score++;
-  const colors = ['#ef4444','#f97316','#eab308','#22c55e'];
-  const labels = ['Weak','Fair','Good','Strong'];
-  bar.style.width = `${score * 25}%`;
-  bar.style.background = colors[score - 1] || '#ef4444';
-  hint.textContent = score > 0 ? labels[score - 1] : '';
+  const colors = ['','#c0392b','#e67e22','#f1c40f','#2ecc71','#1a6b3a'];
+  const labels = ['','Very weak','Weak','Fair','Strong','Very strong'];
+  bar.style.width = `${(score/5)*100}%`;
+  bar.style.background = colors[score] || '';
+  hint.textContent = score > 0 ? labels[score] : 'Use letters, numbers, and a special character';
+  hint.style.color = colors[score] || 'var(--ink-muted)';
 }
 
+// ── OTP ───────────────────────────────────────────────────────────────────
 async function sendOtp() {
   const mobile = document.getElementById('mobile').value.trim();
-  if (mobile.length !== 10) { showAlert('Enter a valid 10-digit mobile number.', 'error'); return; }
+  if (mobile.length !== 10) { showAlert('Enter a valid 10-digit mobile number first.', 'error'); return; }
 
   const btn = document.getElementById('sendOtpBtn');
   btn.disabled = true;
-  btn.textContent = 'Sending…';
+  btn.innerHTML = '<span class="spinner"></span> Sending…';
 
   try {
-    const res = await fetch('http://127.0.0.1:5000/api/send-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res  = await fetch('http://127.0.0.1:5000/api/send-otp', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ mobile })
     });
     const data = await res.json();
+    if (!res.ok) { showAlert(data.error || 'Failed to send OTP.', 'error'); return; }
 
-    // In dev mode the OTP is returned in response for testing
-    if (data.otp) currentOtp = data.otp;
+    document.getElementById('otpVerifySection').classList.add('show');
+    const st = document.getElementById('otpStatus');
+    st.innerHTML = `<i class="fa-solid fa-circle-info"></i> OTP sent to +91 ${mobile}${data.otp ? ' &nbsp;[DEV: <strong>'+data.otp+'</strong>]' : ''}`;
+    st.className = 'otp-status ok show';
+    btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Resend OTP';
 
-    document.getElementById('otpInputGroup').style.display = 'block';
-    document.getElementById('otpStatus').textContent = `OTP sent to +91 ${mobile}${data.otp ? ' (DEV: ' + data.otp + ')' : ''}`;
-    document.getElementById('otpStatus').className = 'otp-status sent';
-
-    // Countdown
-    let secs = 30;
-    const timer = setInterval(() => {
-      btn.textContent = `Resend (${--secs}s)`;
-      if (secs <= 0) { clearInterval(timer); btn.disabled = false; btn.textContent = 'Resend OTP'; }
-    }, 1000);
-
-  } catch {
-    showAlert('Failed to send OTP. Is Flask running?', 'error');
-    btn.disabled = false;
-    btn.textContent = 'Send OTP';
-  }
+  } catch { showAlert('Cannot reach server. Is Flask running?', 'error'); }
+  finally { btn.disabled = false; }
 }
 
 async function verifyOtp() {
   const mobile = document.getElementById('mobile').value.trim();
-  const otp = document.getElementById('otpInput').value.trim();
-  if (!otp) { showAlert('Enter the OTP.', 'error'); return; }
+  const otp    = document.getElementById('otpInput').value.trim();
+  if (!otp) return;
 
   try {
-    const res = await fetch('http://127.0.0.1:5000/api/verify-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res  = await fetch('http://127.0.0.1:5000/api/verify-otp', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ mobile, otp })
     });
     const data = await res.json();
+    const st   = document.getElementById('otpStatus');
     if (res.ok) {
       otpVerified = true;
-      document.getElementById('otpVerifyStatus').textContent = '✓ Mobile number verified';
-      document.getElementById('otpVerifyStatus').className = 'otp-status verified';
+      st.innerHTML = '<i class="fa-solid fa-circle-check"></i> Mobile number verified successfully';
+      st.className = 'otp-status ok show';
+      document.getElementById('otpVerifySection').classList.remove('show');
+      document.getElementById('sendOtpBtn').disabled = true;
+      document.getElementById('sendOtpBtn').innerHTML = '<i class="fa-solid fa-circle-check"></i> Verified';
     } else {
-      document.getElementById('otpVerifyStatus').textContent = data.error || 'Invalid OTP';
-      document.getElementById('otpVerifyStatus').className = 'otp-status';
+      st.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${data.error || 'Invalid OTP'}`;
+      st.className = 'otp-status err show';
     }
   } catch {
-    showAlert('Verification failed.', 'error');
+    document.getElementById('otpStatus').innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Verification failed. Try again.';
+    document.getElementById('otpStatus').className = 'otp-status err show';
   }
 }
 
-async function handleRegister() {
-  const name = document.getElementById('name').value.trim();
-  const role = document.getElementById('role').value;
+// ── Submit ─────────────────────────────────────────────────────────────────
+async function submitRegistration() {
+  const name     = document.getElementById('name').value.trim();
+  const role     = document.getElementById('role').value;
   const district = document.getElementById('district').value.trim();
-  const emp_id = document.getElementById('emp_id').value.trim();
-  const mobile = document.getElementById('mobile').value.trim();
+  const emp_id   = document.getElementById('emp_id').value.trim();
+  const mobile   = document.getElementById('mobile').value.trim();
   const password = document.getElementById('password').value;
-  const confirm = document.getElementById('confirmPassword').value;
+  const confirm  = document.getElementById('confirmPassword').value;
 
-  if (!name || !role || !district || !emp_id || !mobile) { showAlert('Please fill in all required fields.', 'error'); return; }
-  if (!otpVerified) { showAlert('Please verify your mobile number with OTP first.', 'error'); return; }
+  if (!name)     { showAlert('Please enter your full name.', 'error'); return; }
+  if (!role)     { showAlert('Please select your designation.', 'error'); return; }
+  if (!district) { showAlert('Please enter your district.', 'error'); return; }
+  if (!emp_id)   { showAlert('Please enter your Employee ID.', 'error'); return; }
+  if (mobile.length !== 10) { showAlert('Please enter a valid mobile number.', 'error'); return; }
+  if (!otpVerified) { showAlert('Please verify your mobile number via OTP first.', 'error'); return; }
   if (password.length < 8) { showAlert('Password must be at least 8 characters.', 'error'); return; }
-  if (password !== confirm) { showAlert('Passwords do not match.', 'error'); return; }
+  if (password !== confirm)  { showAlert('Passwords do not match.', 'error'); return; }
 
-  const btn = document.getElementById('registerBtn');
+  const btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Registering…';
+  btn.innerHTML = '<span class="spinner"></span> Creating account…';
 
   try {
-    const res = await fetch('http://127.0.0.1:5000/api/officer/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res  = await fetch('http://127.0.0.1:5000/api/officer/register', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ name, role, district, emp_id, mobile, password })
     });
     const data = await res.json();
-    if (res.ok) {
-      showAlert('Registration successful! Redirecting to login…', 'success');
-      setTimeout(() => window.location.href = 'login.html', 1500);
-    } else {
-      showAlert(data.error || 'Registration failed.', 'error');
-    }
-  } catch {
-    showAlert('Cannot connect to server.', 'error');
-  } finally {
+    if (!res.ok) { showAlert(data.error || 'Registration failed.', 'error'); return; }
+
+    showAlert('Account created successfully! Redirecting to login…', 'success');
+    setTimeout(() => window.location.href = 'login.html', 1800);
+
+  } catch { showAlert('Cannot reach server. Is Flask running?', 'error'); }
+  finally {
     btn.disabled = false;
-    btn.innerHTML = 'Register Officer Account';
+    btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Create Officer Account';
   }
 }
+
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id !== 'otpInput') submitRegistration(); });
 </script>
 </body>
 </html>
