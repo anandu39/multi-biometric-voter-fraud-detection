@@ -1,4 +1,5 @@
--- EVRS Schema v3 (Phase 2)
+-- EVRS Schema v4 — Updated per System Design PDF
+-- Added: pending_approval status, admin_actions table, fraud alert review columns
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS officers (
@@ -10,13 +11,16 @@ CREATE TABLE IF NOT EXISTS officers (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- UPDATED: status now supports 'pending_approval', 'active', 'rejected', 'suspended'
 CREATE TABLE IF NOT EXISTS voters (
     voter_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL, dob TEXT, gender TEXT,
     parent_name TEXT, occupation TEXT, phone TEXT, email TEXT,
     street TEXT, ward_number TEXT, panchayat TEXT, taluk TEXT,
     district TEXT, state TEXT, pincode TEXT, constituency TEXT,
-    address TEXT, status TEXT DEFAULT 'active', officer_id INTEGER,
+    address TEXT,
+    status TEXT DEFAULT 'pending_approval',   -- Changed from 'active' to 'pending_approval'
+    officer_id INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (officer_id) REFERENCES officers(officer_id)
 );
@@ -38,12 +42,17 @@ CREATE TABLE IF NOT EXISTS biometrics (
     FOREIGN KEY (voter_id) REFERENCES voters(voter_id)
 );
 
+-- UPDATED: Added reviewed, reviewed_by, review_remarks, review_date columns
 CREATE TABLE IF NOT EXISTS fraud_alerts (
     alert_id INTEGER PRIMARY KEY AUTOINCREMENT,
     voter_id INTEGER, matched_voter_id INTEGER,
     face_score REAL DEFAULT 0, iris_score REAL DEFAULT 0,
     fingerprint_score REAL DEFAULT 0, final_score REAL DEFAULT 0,
-    alert_reason TEXT, alert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    alert_reason TEXT, alert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reviewed INTEGER DEFAULT 0,
+    reviewed_by INTEGER,
+    review_remarks TEXT,
+    review_date TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS otp_store (
@@ -63,10 +72,25 @@ CREATE TABLE IF NOT EXISTS voting_log (
     FOREIGN KEY (officer_id) REFERENCES officers(officer_id)
 );
 
+-- NEW TABLE: Admin approve/reject action log (PDF requirement: Admin Management Module)
+CREATE TABLE IF NOT EXISTS admin_actions (
+    action_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    voter_id INTEGER NOT NULL,
+    officer_id INTEGER NOT NULL,
+    action TEXT NOT NULL,        -- 'approved' | 'rejected'
+    remarks TEXT,
+    action_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (voter_id) REFERENCES voters(voter_id),
+    FOREIGN KEY (officer_id) REFERENCES officers(officer_id)
+);
+
+-- Indexes
 CREATE INDEX IF NOT EXISTS idx_document_number  ON identity_documents(document_number);
 CREATE INDEX IF NOT EXISTS idx_biometric_hash   ON biometrics(biometric_hash);
 CREATE INDEX IF NOT EXISTS idx_voter_ward       ON voters(ward_number);
 CREATE INDEX IF NOT EXISTS idx_voter_district   ON voters(district);
+CREATE INDEX IF NOT EXISTS idx_voter_status     ON voters(status);
 CREATE INDEX IF NOT EXISTS idx_otp_mobile       ON otp_store(mobile, expires_at);
 CREATE INDEX IF NOT EXISTS idx_voting_log_voter ON voting_log(voter_id, voted_at);
 CREATE INDEX IF NOT EXISTS idx_voting_log_ward  ON voting_log(ward_number, voted_at);
+CREATE INDEX IF NOT EXISTS idx_admin_actions    ON admin_actions(voter_id, action_date);
