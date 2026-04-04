@@ -374,6 +374,10 @@ if (session && session.expires > Date.now()) {
   if (session.role === 'booth_officer' || session.role === 'supervisor') {
     actions.innerHTML += `<a href="booth-login.html" class="sd-btn"><i class="fa-solid fa-shield-halved"></i> Booth Verification</a>`;
   }
+  if (session.role === 'supervisor') {
+    actions.innerHTML += `<a href="admin-approval.html" class="sd-btn" style="background:var(--gold,#b8860b);color:#1a1a2e;font-weight:700;"><i class="fa-solid fa-user-check"></i> Admin Approval</a>`;
+    actions.innerHTML += `<a href="fraud-alerts.html" class="sd-btn outline"><i class="fa-solid fa-triangle-exclamation"></i> Fraud Alerts</a>`;
+  }
   actions.innerHTML += `<button class="sd-btn outline" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>`;
 }
 

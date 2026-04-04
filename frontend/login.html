@@ -124,7 +124,7 @@ footer{text-align:center;padding:16px;color:var(--ink-muted);font-size:.75rem;bo
 // Already logged in → redirect based on role
 const session = JSON.parse(sessionStorage.getItem('evrs_officer') || 'null');
 if (session && session.expires > Date.now()) {
-  window.location.href = session.role === 'booth_officer' ? 'booth-login.html' : 'register.html';
+  window.location.href = session.role === 'booth_officer' ? 'booth-login.html' : session.role === 'supervisor' ? 'admin-approval.html' : 'register.html';
 }
 
 function showAlert(msg, type) {
@@ -154,10 +154,12 @@ async function handleLogin() {
 
     // Store session with role
     sessionStorage.setItem('evrs_officer', JSON.stringify({
-      id:      data.officer_id,
-      name:    data.name,
-      role:    data.role,
-      expires: Date.now() + 8 * 60 * 60 * 1000
+      id:         data.officer_id,
+      officer_id: data.officer_id,
+      name:       data.name,
+      role:       data.role,
+      district:   data.district,
+      expires:    Date.now() + 8 * 60 * 60 * 1000
     }));
 
     showAlert('Login successful! Redirecting…', 'success');
@@ -166,6 +168,8 @@ async function handleLogin() {
     setTimeout(() => {
       if (data.role === 'booth_officer') {
         window.location.href = 'booth-login.html';
+      } else if (data.role === 'supervisor') {
+        window.location.href = 'admin-approval.html';
       } else {
         window.location.href = 'register.html';
       }

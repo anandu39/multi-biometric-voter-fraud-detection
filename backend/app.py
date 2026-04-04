@@ -14,6 +14,7 @@ from routes.officer_routes import officer_bp
 from routes.otp_routes import otp_bp
 from routes.biometric_routes import biometric_bp
 from routes.booth_routes import booth_bp
+from routes.admin_routes import admin_bp          # ← Gap 3 fix: was missing
 
 app = Flask(__name__)
 
@@ -27,6 +28,7 @@ app.register_blueprint(officer_bp)
 app.register_blueprint(otp_bp)
 app.register_blueprint(biometric_bp)
 app.register_blueprint(booth_bp)
+app.register_blueprint(admin_bp)                  # ← Gap 3 fix: all /api/admin/* routes now active
 
 # ── Path resolution — works both locally and on Render ───────────────────
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))          # backend/
